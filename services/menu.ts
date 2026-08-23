@@ -78,3 +78,33 @@ export async function deleteMenu(id: string) {
     method: "DELETE",
   });
 }
+
+export async function uploadImage(file: File): Promise<{ url: string }> {
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+  if (!API_URL) {
+    throw new Error("NEXT_PUBLIC_API_URL belum diset");
+  }
+
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  const headers = new Headers();
+  if (token) {
+    headers.set("Authorization", `Bearer ${token}`);
+  }
+
+  const response = await fetch(`${API_URL}/upload`, {
+    method: "POST",
+    headers,
+    body: formData,
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Gagal mengunggah gambar");
+  }
+
+  return data;
+}

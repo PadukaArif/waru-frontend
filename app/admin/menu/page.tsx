@@ -6,6 +6,7 @@ import {
   deleteMenu,
   getMenus,
   updateMenu,
+  uploadImage,
   type Menu,
   type MenuCategory,
 } from "@/services/menu";
@@ -30,6 +31,39 @@ export default function AdminMenuPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [uploadError, setUploadError] = useState("");
+
+  async function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const allowedTypes = ["image/png", "image/jpeg", "image/jpg", "image/webp"];
+    if (!allowedTypes.includes(file.type)) {
+      setUploadError("Format file tidak didukung. Gunakan JPG, JPEG, PNG, atau WEBP.");
+      return;
+    }
+
+    try {
+      setUploadingImage(true);
+      setUploadError("");
+
+      const response = await uploadImage(file);
+      
+      const API_URL = process.env.NEXT_PUBLIC_API_URL;
+      const fullUrl = `${API_URL}${response.url}`;
+      
+      handleChange("imageUrl", fullUrl);
+    } catch (err) {
+      console.error("Upload error:", err);
+      setUploadError(
+        err instanceof Error ? err.message : "Gagal mengunggah gambar."
+      );
+    } finally {
+      setUploadingImage(false);
+    }
+  }
 
   async function loadMenus() {
     try {
@@ -265,23 +299,69 @@ export default function AdminMenuPage() {
               </select>
             </div>
 
-            <div>
+            <div className="md:col-span-2">
               <label className="mb-2 block text-sm font-medium">
-                Image URL
+                Gambar Menu
               </label>
 
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+                {/* Preview Container */}
+                <div className="relative aspect-video w-full max-w-[200px] overflow-hidden rounded-lg border bg-gray-50 flex items-center justify-center">
+                  {form.imageUrl ? (
+                    <img
+                      src={form.imageUrl}
+                      alt="Preview"
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    <span className="text-xs text-gray-400">Tidak ada gambar</span>
+                  )}
+                </div>
+
+                <div className="flex-1 space-y-2">
+                  <div className="flex flex-wrap items-center gap-3">
+                    <label
+                      htmlFor="image-upload"
+                      className={`rounded-lg bg-black px-4 py-2.5 text-sm font-semibold text-white cursor-pointer hover:bg-gray-800 transition ${
+                        uploadingImage ? "opacity-50 cursor-not-allowed" : ""
+                      }`}
+                    >
+                      {uploadingImage ? "Mengunggah..." : "Pilih File Gambar"}
+                    </label>
+                    <input
+                      id="image-upload"
+                      type="file"
+                      accept="image/png, image/jpeg, image/jpg, image/webp"
+                      onChange={handleFileChange}
+                      disabled={uploadingImage}
+                      className="hidden"
+                    />
+                    
+                    {form.imageUrl && (
+                      <button
+                        type="button"
+                        onClick={() => handleChange("imageUrl", "")}
+                        className="rounded-lg border border-red-300 px-4 py-2.5 text-sm font-semibold text-red-600 hover:bg-red-50 transition"
+                      >
+                        Hapus Gambar
+                      </button>
+                    )}
+                  </div>
+                  <p className="text-xs text-gray-500">
+                    Mendukung format JPG, JPEG, PNG, WEBP
+                  </p>
+                  {uploadError && (
+                    <p className="text-xs font-medium text-red-500">
+                      {uploadError}
+                    </p>
+                  )}
+                </div>
+              </div>
+              
               <input
-                type="url"
+                type="hidden"
                 value={form.imageUrl}
-                onChange={(event) =>
-                  handleChange(
-                    "imageUrl",
-                    event.target.value
-                  )
-                }
                 required
-                className="w-full rounded-lg border px-4 py-3"
-                placeholder="https://..."
               />
             </div>
 
@@ -322,7 +402,7 @@ export default function AdminMenuPage() {
             <div className="flex gap-3 md:col-span-2">
               <button
                 type="submit"
-                disabled={saving}
+                disabled={saving || uploadingImage}
                 className="rounded-lg bg-black px-5 py-3 font-medium text-white disabled:opacity-50"
               >
                 {saving
