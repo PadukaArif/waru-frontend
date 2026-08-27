@@ -31,9 +31,30 @@ export async function apiRequest<T>(
     headers,
   });
 
-  const data = await response.json();
+  const data = await response.json().catch(() => ({}));
 
   if (!response.ok) {
+    if (response.status === 401) {
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("token");
+        if (
+          !window.location.pathname.startsWith("/login") &&
+          !window.location.pathname.startsWith("/register")
+        ) {
+          window.location.href = "/login";
+        }
+      }
+      throw new Error(
+        data.message || "Akses ditolak. Token tidak valid atau sesi telah berakhir."
+      );
+    }
+
+    if (response.status === 403) {
+      throw new Error(
+        data.message || "Akses ditolak. Anda tidak memiliki hak akses untuk resource ini."
+      );
+    }
+
     throw new Error(data.message || "Terjadi kesalahan pada server");
   }
 
