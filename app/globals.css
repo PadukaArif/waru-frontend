@@ -1,21 +1,60 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --font-sans: var(--font-sofia-pro), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-sofia-pro: 'Sofia Pro', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* Primary text / dark surfaces / strong contrast */
+  --color-navy: #293855;
+  --color-navy-dark: #1b263b;
+  --color-navy-light: #3a4d73;
+  --color-navy-subtle: #4b5d80;
+
+  /* Primary action / links / active states / key interaction */
+  --color-blue-primary: #4265D6;
+  --color-blue-hover: #3352bc;
+  --color-blue-active: #2844a4;
+  --color-blue-light: #eef2ff;
+
+  /* Attention / selected states / important status / accent */
+  --color-amber-warm: #F2AC20;
+  --color-amber-hover: #d99516;
+  --color-amber-light: #fffbeb;
+  --color-amber-subtle: #fde8b6;
+
+  /* Success / positive background / subtle supporting surfaces */
+  --color-green-soft: #C2E7C9;
+  --color-green-dark: #204d28;
+  --color-green-light: #f0fdf4;
+  --color-green-border: #9ed5a9;
+
+  /* Border Radii Tokens */
+  --radius-xs: 0.25rem;
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.25rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  --background: #f8fafc;
+  --foreground: #293855;
+  --font-sofia-pro: 'Sofia Pro', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: var(--font-sofia-pro);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* Global focus accessibility foundation */
+:focus-visible {
+  outline: 2px solid #4265D6;
+  outline-offset: 2px;
+}
+
+

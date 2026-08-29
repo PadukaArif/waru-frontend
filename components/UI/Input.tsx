@@ -3,9 +3,10 @@ import type { ChangeEvent } from "react";
 type InputProps = {
   label?: string;
   id?: string;
+  name?: string;
   type?: string;
   placeholder?: string;
-  value?: string;
+  value?: string | number;
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   required?: boolean;
   disabled?: boolean;
@@ -16,6 +17,7 @@ type InputProps = {
 export default function Input({
   label,
   id,
+  name,
   type = "text",
   placeholder,
   value,
@@ -30,7 +32,7 @@ export default function Input({
       {label && (
         <label
           htmlFor={id}
-          className="text-xs sm:text-sm font-medium text-gray-700"
+          className="text-xs sm:text-sm font-semibold text-[#293855]"
         >
           {label}
         </label>
@@ -38,6 +40,7 @@ export default function Input({
 
       <input
         id={id}
+        name={name}
         type={type}
         placeholder={placeholder}
         value={value}
@@ -45,8 +48,9 @@ export default function Input({
         required={required}
         disabled={disabled}
         autoComplete={autoComplete}
-        className={`w-full rounded-xl border border-gray-300 bg-white px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm text-gray-900 placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:border-transparent transition disabled:bg-gray-100 disabled:text-gray-400 ${className}`}
+        className={`w-full rounded-xl border border-slate-300 bg-white px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm text-[#293855] placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6] focus-visible:border-transparent transition-colors disabled:bg-slate-100 disabled:text-slate-400 min-h-[44px] ${className}`}
       />
     </div>
   );
-}
+}
+

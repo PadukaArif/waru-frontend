@@ -1,6 +1,6 @@
 type CardProps = {
-    children: React.ReactNode;
-    className?: string;
+  children: React.ReactNode;
+  className?: string;
 };
 
 export default function Card({
@@ -9,9 +9,9 @@ export default function Card({
 }: CardProps) {
   return (
     <div
-      className={`rounded-2xl border border-gray-200 bg-white p-5 sm:p-6 shadow-2xs ${className}`}
+      className={`rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 shadow-xs text-[#293855] ${className}`}
     >
       {children}
     </div>
   );
-}
+}

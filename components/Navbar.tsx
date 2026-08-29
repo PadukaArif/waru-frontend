@@ -36,9 +36,9 @@ export default function Navbar() {
   }
 
   return (
-    <header className="border-b border-gray-200 bg-white sticky top-0 z-40">
+    <header className="border-b border-slate-200 bg-white/95 backdrop-blur-xs sticky top-0 z-40">
       <nav className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 sm:px-6 py-3 sm:py-3.5">
-        <Link href="/" className="text-xl font-extrabold tracking-tight text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black rounded-lg px-2 py-1 hover:opacity-80 transition">
+        <Link href="/" className="text-xl font-black tracking-tight text-[#293855] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6] rounded-lg px-2 py-1 hover:text-[#4265D6] transition-colors">
           WARU
         </Link>
 
@@ -46,8 +46,8 @@ export default function Navbar() {
         <div className="hidden md:flex items-center gap-1.5">
           <Link
             href="/"
-            className={`text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black rounded-lg px-3 py-1.5 ${
-              isActive("/") ? "text-black bg-gray-100 font-semibold" : "text-gray-600 hover:text-black hover:bg-gray-50"
+            className={`text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6] rounded-lg px-3 py-1.5 ${
+              isActive("/") ? "text-[#4265D6] bg-blue-50/80 font-bold" : "text-slate-600 hover:text-[#293855] hover:bg-slate-100/70 font-medium"
             }`}
           >
             Home
@@ -55,8 +55,8 @@ export default function Navbar() {
 
           <Link
             href="/menu"
-            className={`text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black rounded-lg px-3 py-1.5 ${
-              isActive("/menu") ? "text-black bg-gray-100 font-semibold" : "text-gray-600 hover:text-black hover:bg-gray-50"
+            className={`text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6] rounded-lg px-3 py-1.5 ${
+              isActive("/menu") ? "text-[#4265D6] bg-blue-50/80 font-bold" : "text-slate-600 hover:text-[#293855] hover:bg-slate-100/70 font-medium"
             }`}
           >
             Menu
@@ -66,8 +66,8 @@ export default function Navbar() {
             <>
               <Link
                 href="/order"
-                className={`text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black rounded-lg px-3 py-1.5 ${
-                  isActive("/order") ? "text-black bg-gray-100 font-semibold" : "text-gray-600 hover:text-black hover:bg-gray-50"
+                className={`text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6] rounded-lg px-3 py-1.5 ${
+                  isActive("/order") ? "text-[#4265D6] bg-blue-50/80 font-bold" : "text-slate-600 hover:text-[#293855] hover:bg-slate-100/70 font-medium"
                 }`}
               >
                 Orders
@@ -75,8 +75,8 @@ export default function Navbar() {
 
               <Link
                 href="/payment"
-                className={`text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black rounded-lg px-3 py-1.5 ${
-                  isActive("/payment") ? "text-black bg-gray-100 font-semibold" : "text-gray-600 hover:text-black hover:bg-gray-50"
+                className={`text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6] rounded-lg px-3 py-1.5 ${
+                  isActive("/payment") ? "text-[#4265D6] bg-blue-50/80 font-bold" : "text-slate-600 hover:text-[#293855] hover:bg-slate-100/70 font-medium"
                 }`}
               >
                 Riwayat Pembayaran
@@ -86,16 +86,16 @@ export default function Navbar() {
                 <>
                   <Link
                     href="/admin"
-                    className={`text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black rounded-lg px-3 py-1.5 ${
-                      isActive("/admin") && !isActive("/admin/assistant") ? "text-black bg-gray-100 font-semibold" : "text-gray-600 hover:text-black hover:bg-gray-50"
+                    className={`text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6] rounded-lg px-3 py-1.5 ${
+                      isActive("/admin") && !isActive("/admin/assistant") ? "text-[#4265D6] bg-blue-50/80 font-bold" : "text-slate-600 hover:text-[#293855] hover:bg-slate-100/70 font-medium"
                     }`}
                   >
                     Admin
                   </Link>
                   <Link
                     href="/admin/assistant"
-                    className={`text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black rounded-lg px-3 py-1.5 ${
-                      isActive("/admin/assistant") ? "text-black bg-gray-100 font-semibold" : "text-gray-600 hover:text-black hover:bg-gray-50"
+                    className={`text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6] rounded-lg px-3 py-1.5 ${
+                      isActive("/admin/assistant") ? "text-[#4265D6] bg-blue-50/80 font-bold" : "text-slate-600 hover:text-[#293855] hover:bg-slate-100/70 font-medium"
                     }`}
                   >
                     AI Assistant
@@ -106,7 +106,7 @@ export default function Navbar() {
               <button
                 type="button"
                 onClick={handleLogout}
-                className="ml-2 rounded-lg bg-red-50 border border-red-200 px-3.5 py-1.5 text-sm font-semibold text-red-600 hover:bg-red-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 transition"
+                className="ml-2 rounded-lg bg-red-50 border border-red-200 px-3.5 py-1.5 text-sm font-semibold text-red-600 hover:bg-red-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 transition cursor-pointer"
               >
                 Logout
               </button>
@@ -115,8 +115,8 @@ export default function Navbar() {
             <>
               <Link
                 href="/login"
-                className={`text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black rounded-lg px-3 py-1.5 ${
-                  isActive("/login") ? "text-black bg-gray-100 font-semibold" : "text-gray-600 hover:text-black hover:bg-gray-50"
+                className={`text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6] rounded-lg px-3 py-1.5 ${
+                  isActive("/login") ? "text-[#4265D6] bg-blue-50/80 font-bold" : "text-slate-600 hover:text-[#293855] hover:bg-slate-100/70 font-medium"
                 }`}
               >
                 Login
@@ -124,7 +124,7 @@ export default function Navbar() {
 
               <Link
                 href="/register"
-                className="ml-2 rounded-lg bg-black px-4 py-2 text-sm font-semibold text-white hover:bg-gray-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-black transition"
+                className="ml-2 rounded-lg bg-[#4265D6] px-4 py-2 text-sm font-semibold text-white hover:bg-[#3352bc] active:bg-[#2844a4] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#4265D6] transition shadow-xs"
               >
                 Register
               </Link>
@@ -136,7 +136,7 @@ export default function Navbar() {
         <button
           type="button"
           onClick={() => setMobileMenuOpen((prev) => !prev)}
-          className="md:hidden p-2 rounded-lg text-gray-700 hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black transition"
+          className="md:hidden p-2 rounded-lg text-[#293855] hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6] transition cursor-pointer"
           aria-expanded={mobileMenuOpen}
           aria-label={mobileMenuOpen ? "Tutup menu navigasi" : "Buka menu navigasi"}
         >
@@ -154,12 +154,12 @@ export default function Navbar() {
 
       {/* Mobile Navigation Menu Panel */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-gray-200 bg-white px-4 py-3 space-y-1.5 shadow-2xs">
+        <div className="md:hidden border-t border-slate-200 bg-white px-4 py-3 space-y-1.5 shadow-xs">
           <Link
             href="/"
             onClick={() => setMobileMenuOpen(false)}
-            className={`block rounded-lg px-3 py-2.5 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black ${
-              isActive("/") ? "bg-gray-100 text-black" : "text-gray-800 hover:bg-gray-100"
+            className={`block rounded-lg px-3 py-2.5 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6] ${
+              isActive("/") ? "bg-blue-50/80 text-[#4265D6]" : "text-[#293855] hover:bg-slate-100/70"
             }`}
           >
             Home
@@ -168,8 +168,8 @@ export default function Navbar() {
           <Link
             href="/menu"
             onClick={() => setMobileMenuOpen(false)}
-            className={`block rounded-lg px-3 py-2.5 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black ${
-              isActive("/menu") ? "bg-gray-100 text-black" : "text-gray-800 hover:bg-gray-100"
+            className={`block rounded-lg px-3 py-2.5 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6] ${
+              isActive("/menu") ? "bg-blue-50/80 text-[#4265D6]" : "text-[#293855] hover:bg-slate-100/70"
             }`}
           >
             Menu
@@ -180,8 +180,8 @@ export default function Navbar() {
               <Link
                 href="/order"
                 onClick={() => setMobileMenuOpen(false)}
-                className={`block rounded-lg px-3 py-2.5 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black ${
-                  isActive("/order") ? "bg-gray-100 text-black" : "text-gray-800 hover:bg-gray-100"
+                className={`block rounded-lg px-3 py-2.5 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6] ${
+                  isActive("/order") ? "bg-blue-50/80 text-[#4265D6]" : "text-[#293855] hover:bg-slate-100/70"
                 }`}
               >
                 Orders
@@ -190,8 +190,8 @@ export default function Navbar() {
               <Link
                 href="/payment"
                 onClick={() => setMobileMenuOpen(false)}
-                className={`block rounded-lg px-3 py-2.5 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black ${
-                  isActive("/payment") ? "bg-gray-100 text-black" : "text-gray-800 hover:bg-gray-100"
+                className={`block rounded-lg px-3 py-2.5 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6] ${
+                  isActive("/payment") ? "bg-blue-50/80 text-[#4265D6]" : "text-[#293855] hover:bg-slate-100/70"
                 }`}
               >
                 Riwayat Pembayaran
@@ -202,8 +202,8 @@ export default function Navbar() {
                   <Link
                     href="/admin"
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`block rounded-lg px-3 py-2.5 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black ${
-                      isActive("/admin") && !isActive("/admin/assistant") ? "bg-gray-100 text-black" : "text-gray-800 hover:bg-gray-100"
+                    className={`block rounded-lg px-3 py-2.5 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6] ${
+                      isActive("/admin") && !isActive("/admin/assistant") ? "bg-blue-50/80 text-[#4265D6]" : "text-[#293855] hover:bg-slate-100/70"
                     }`}
                   >
                     Admin
@@ -211,8 +211,8 @@ export default function Navbar() {
                   <Link
                     href="/admin/assistant"
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`block rounded-lg px-3 py-2.5 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black ${
-                      isActive("/admin/assistant") ? "bg-gray-100 text-black" : "text-gray-800 hover:bg-gray-100"
+                    className={`block rounded-lg px-3 py-2.5 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6] ${
+                      isActive("/admin/assistant") ? "bg-blue-50/80 text-[#4265D6]" : "text-[#293855] hover:bg-slate-100/70"
                     }`}
                   >
                     AI Assistant
@@ -220,11 +220,11 @@ export default function Navbar() {
                 </>
               )}
 
-              <div className="pt-2 border-t border-gray-100 mt-2">
+              <div className="pt-2 border-t border-slate-100 mt-2">
                 <button
                   type="button"
                   onClick={handleLogout}
-                  className="w-full text-left rounded-lg bg-red-50 border border-red-200 px-3 py-2.5 text-sm font-semibold text-red-600 hover:bg-red-100 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600"
+                  className="w-full text-left rounded-lg bg-red-50 border border-red-200 px-3 py-2.5 text-sm font-semibold text-red-600 hover:bg-red-100 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 cursor-pointer"
                 >
                   Logout
                 </button>
@@ -235,8 +235,8 @@ export default function Navbar() {
               <Link
                 href="/login"
                 onClick={() => setMobileMenuOpen(false)}
-                className={`block rounded-lg px-3 py-2.5 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black ${
-                  isActive("/login") ? "bg-gray-100 text-black" : "text-gray-800 hover:bg-gray-100"
+                className={`block rounded-lg px-3 py-2.5 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6] ${
+                  isActive("/login") ? "bg-blue-50/80 text-[#4265D6]" : "text-[#293855] hover:bg-slate-100/70"
                 }`}
               >
                 Login
@@ -245,7 +245,7 @@ export default function Navbar() {
               <Link
                 href="/register"
                 onClick={() => setMobileMenuOpen(false)}
-                className="block rounded-lg bg-black px-4 py-2.5 text-sm font-semibold text-white hover:bg-gray-800 text-center transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-black"
+                className="block rounded-lg bg-[#4265D6] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#3352bc] text-center transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#4265D6] shadow-xs"
               >
                 Register
               </Link>
