@@ -91,7 +91,9 @@ export default function KitchenDashboardPage() {
       );
     } catch (err) {
       console.error("Failed to update status:", err);
-      alert("Gagal mengubah status antrean. Silakan coba lagi.");
+      const msg = err instanceof Error ? err.message : "Gagal mengubah status antrean.";
+      alert(msg);
+      setError(msg);
     } finally {
       setUpdatingId(null);
     }

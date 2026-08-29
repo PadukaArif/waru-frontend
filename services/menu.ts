@@ -2,6 +2,11 @@ import { apiRequest } from "./api";
 
 export type MenuCategory = "Heavy Food" | "Light Food";
 
+export interface MenuIngredient {
+  inventoryId: string;
+  quantity: number;
+}
+
 export interface Menu {
   _id: string;
   name: string;
@@ -11,6 +16,7 @@ export interface Menu {
   isAvailable: boolean;
   isRecommended: boolean;
   imageUrl: string;
+  ingredients?: MenuIngredient[];
   createdAt?: string;
   updatedAt?: string;
 }
@@ -50,6 +56,7 @@ export interface CreateMenuInput {
   isAvailable: boolean;
   isRecommended: boolean;
   imageUrl: string;
+  ingredients?: MenuIngredient[];
 }
 
 export type UpdateMenuInput = Partial<CreateMenuInput>;
