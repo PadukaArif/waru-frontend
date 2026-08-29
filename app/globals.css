@@ -60,7 +60,8 @@ body {
 /* Typography Hierarchy & Page Layout Utilities */
 .page-container {
   width: 100%;
-  max-width: 80rem; /* 1280px max-w-7xl */
+  max-width: 80rem;
+  /* 1280px max-w-7xl */
   margin-left: auto;
   margin-right: auto;
   padding-left: 1rem;
@@ -137,5 +138,15 @@ body {
   color: #4b5d80;
 }
 
-
-
+/* Accessibility: Reduced motion overrides */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-delay: -1ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    background-attachment: initial !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+  }
+}

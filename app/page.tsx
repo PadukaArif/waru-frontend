@@ -1,8 +1,26 @@
+"use client";
+
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { getJwtPayload } from "@/services/auth";
 import Button from "@/components/UI/Button";
 import Card from "@/components/UI/Card";
 
 export default function Home() {
+  const [mounted, setMounted] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userRole, setUserRole] = useState<string | null>(null);
+
+  useEffect(() => {
+    setMounted(true);
+    const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+    const payload = getJwtPayload();
+    if (token && payload) {
+      setIsLoggedIn(true);
+      setUserRole(payload.role || null);
+    }
+  }, []);
+
   return (
     <div className="page-container py-8 sm:py-12 md:py-16 space-y-16 sm:space-y-24">
       {/* 1. Hero Section (First Viewport) */}
@@ -28,11 +46,27 @@ export default function Home() {
               </Button>
             </Link>
 
-            <Link href="/login">
-              <Button variant="outline" className="px-6 py-3.5 text-sm sm:text-base">
-                Masuk ke Sistem
-              </Button>
-            </Link>
+            {mounted && isLoggedIn ? (
+              userRole === "boss" ? (
+                <Link href="/admin">
+                  <Button variant="outline" className="px-6 py-3.5 text-sm sm:text-base">
+                    Portal Administrasi
+                  </Button>
+                </Link>
+              ) : (
+                <Link href="/order">
+                  <Button variant="outline" className="px-6 py-3.5 text-sm sm:text-base">
+                    Daftar Pesanan
+                  </Button>
+                </Link>
+              )
+            ) : (
+              <Link href="/login">
+                <Button variant="outline" className="px-6 py-3.5 text-sm sm:text-base">
+                  Masuk ke Sistem
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
 
@@ -143,27 +177,63 @@ export default function Home() {
 
       {/* 3. High-Contrast Product Banner */}
       <section className="rounded-2xl bg-[#293855] text-white p-8 sm:p-12 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-        <div className="space-y-2 max-w-xl">
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-white">
-            Siap Mengelola Warung Anda Lebih Efisien?
-          </h2>
-          <p className="text-sm text-slate-300 leading-relaxed">
-            Masuk ke akun WARU Anda untuk mengakses kasir, pesanan, dan laporan analisis usaha sekarang.
-          </p>
-        </div>
+        {mounted && isLoggedIn ? (
+          <>
+            <div className="space-y-2 max-w-xl">
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-white">
+                Portal Operasional Warung Anda
+              </h2>
+              <p className="text-sm text-slate-300 leading-relaxed">
+                Kelola pesanan meja secara real-time, pantau riwayat pembayaran transaksi, dan analisis performa bisnis Anda.
+              </p>
+            </div>
 
-        <div className="flex flex-wrap items-center gap-3 shrink-0">
-          <Link href="/menu">
-            <Button variant="amber" className="px-6 py-3">
-              Lihat Menu
-            </Button>
-          </Link>
-          <Link href="/login">
-            <Button variant="outline" className="bg-transparent border-white/30 text-white hover:bg-white/10 hover:border-white px-6 py-3">
-              Masuk Akun
-            </Button>
-          </Link>
-        </div>
+            <div className="flex flex-wrap items-center gap-3 shrink-0">
+              <Link href="/order">
+                <Button variant="amber" className="px-6 py-3">
+                  Kelola Pesanan
+                </Button>
+              </Link>
+              {userRole === "boss" ? (
+                <Link href="/admin/assistant">
+                  <Button variant="ghost" className="px-6 py-3">
+                    Asisten AI
+                  </Button>
+                </Link>
+              ) : (
+                <Link href="/menu">
+                  <Button variant="ghost" className="px-6 py-3">
+                    Katalog Menu
+                  </Button>
+                </Link>
+              )}
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="space-y-2 max-w-xl">
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-white">
+                Siap Mengelola Warung Anda Lebih Efisien?
+              </h2>
+              <p className="text-sm text-slate-300 leading-relaxed">
+                Masuk ke akun WARU Anda untuk mengakses kasir, pesanan, dan laporan analisis usaha sekarang.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-3 shrink-0">
+              <Link href="/menu">
+                <Button variant="amber" className="px-6 py-3">
+                  Lihat Menu
+                </Button>
+              </Link>
+              <Link href="/login">
+                <Button variant="ghost" className="px-6 py-3">
+                  Masuk Akun
+                </Button>
+              </Link>
+            </div>
+          </>
+        )}
       </section>
     </div>
   );

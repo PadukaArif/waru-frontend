@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { getPayments, type Payment, type PaymentStatus, type PaymentMethod } from "@/services/payment";
+import PageHeader from "@/components/UI/PageHeader";
+import Button from "@/components/UI/Button";
 
 function formatRupiah(value: number) {
   return `Rp ${value.toLocaleString("id-ID")}`;
@@ -10,10 +12,10 @@ function formatRupiah(value: number) {
 
 function methodLabel(method: PaymentMethod) {
   const labels: Record<PaymentMethod, string> = {
-    cash: "Cash",
-    transfer: "Transfer",
-    qris: "QRIS",
-    card: "Card",
+    cash: "Tunai (Cash)",
+    transfer: "Transfer Bank",
+    qris: "QRIS Direct",
+    card: "Kartu Debit/Kredit",
   };
   return labels[method] || method;
 }
@@ -30,12 +32,12 @@ function statusLabel(status: PaymentStatus) {
 
 function statusBadgeClass(status: PaymentStatus) {
   const classes: Record<PaymentStatus, string> = {
-    pending: "bg-gray-100 text-gray-800 border-gray-200",
-    paid: "bg-green-100 text-green-800 border-green-200",
-    failed: "bg-red-100 text-red-800 border-red-200",
-    refunded: "bg-yellow-100 text-yellow-800 border-yellow-200",
+    pending: "bg-amber-50 text-[#d99516] border-amber-200",
+    paid: "bg-emerald-50 text-[#204d28] border-emerald-200 font-bold",
+    failed: "bg-red-50 text-red-800 border-red-200 font-bold",
+    refunded: "bg-slate-100 text-slate-700 border-slate-300",
   };
-  return classes[status] || "bg-gray-100 text-gray-800 border-gray-200";
+  return classes[status] || "bg-slate-100 text-slate-700 border-slate-200";
 }
 
 function formatDate(dateStr: string) {
@@ -91,137 +93,134 @@ export default function PaymentHistoryPage() {
 
   if (loading) {
     return (
-      <main className="flex-1 bg-gray-50/30">
-        <section className="mx-auto w-full max-w-7xl px-4 sm:px-6 py-8 sm:py-12">
-          <div className="mb-8 border-b border-gray-200 pb-6">
-            <div className="h-8 w-48 animate-pulse rounded-lg bg-gray-200" />
-            <div className="mt-2 h-4 w-60 animate-pulse rounded-lg bg-gray-200" />
-          </div>
+      <div className="page-container py-6 sm:py-8 md:py-10 space-y-6">
+        <div className="border-b border-slate-200 pb-6 space-y-2">
+          <div className="h-8 w-48 animate-pulse rounded-lg bg-slate-200" />
+          <div className="h-4 w-64 animate-pulse rounded-lg bg-slate-200" />
+        </div>
 
-          <div className="space-y-4">
-            {Array.from({ length: 4 }).map((_, index) => (
-              <div key={index} className="rounded-2xl border border-gray-200 bg-white p-5 shadow-2xs">
-                <div className="flex flex-col gap-4 sm:flex-row sm:justify-between">
-                  <div className="space-y-3">
-                    <div className="h-6 w-40 animate-pulse rounded bg-gray-200" />
-                    <div className="h-4 w-28 animate-pulse rounded bg-gray-200" />
-                  </div>
-                  <div className="space-y-3 sm:text-right">
-                    <div className="h-6 w-32 animate-pulse rounded bg-gray-200" />
-                    <div className="h-4 w-16 animate-pulse rounded bg-gray-200" />
-                  </div>
+        <div className="space-y-4">
+          {Array.from({ length: 4 }).map((_, index) => (
+            <div key={index} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-xs">
+              <div className="flex flex-col gap-4 sm:flex-row sm:justify-between">
+                <div className="space-y-3">
+                  <div className="h-6 w-40 animate-pulse rounded bg-slate-200" />
+                  <div className="h-4 w-28 animate-pulse rounded bg-slate-200" />
+                </div>
+                <div className="space-y-3 sm:text-right">
+                  <div className="h-6 w-32 animate-pulse rounded bg-slate-200" />
+                  <div className="h-4 w-16 animate-pulse rounded bg-slate-200" />
                 </div>
               </div>
-            ))}
-          </div>
-        </section>
-      </main>
+            </div>
+          ))}
+        </div>
+      </div>
     );
   }
 
   if (error) {
     return (
-      <main className="flex-1 flex items-center justify-center bg-gray-50/30 min-h-[60vh] px-4">
-        <div className="w-full max-w-md rounded-2xl border border-gray-200 bg-white p-8 text-center shadow-2xs">
-          <h1 className="text-xl font-bold text-gray-900">Gagal memuat pembayaran</h1>
-          <p className="mt-2 text-xs sm:text-sm text-gray-600">{error}</p>
-          <button
-            type="button"
+      <div className="page-container py-12 flex items-center justify-center min-h-[50vh]">
+        <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-xs space-y-4">
+          <h1 className="text-xl font-bold text-[#293855]">Gagal Memuat Pembayaran</h1>
+          <p className="text-xs sm:text-sm text-slate-600">{error}</p>
+          <Button
+            variant="primary"
             onClick={() => loadPayments(page)}
-            className="mt-6 inline-flex items-center justify-center rounded-xl bg-black px-5 py-3 text-xs sm:text-sm font-semibold text-white hover:bg-gray-800 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black min-h-[44px]"
           >
             Coba Lagi
-          </button>
+          </Button>
         </div>
-      </main>
+      </div>
     );
   }
 
   return (
-    <main className="flex-1 bg-gray-50/30">
-      <section className="mx-auto w-full max-w-7xl px-4 sm:px-6 py-8 sm:py-12">
-        <div className="mb-8 border-b border-gray-200 pb-6">
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-gray-900">Riwayat Pembayaran</h1>
-          <p className="mt-1.5 text-xs sm:text-sm text-gray-600">Daftar transaksi pembayaran WARU.</p>
+    <div className="page-container py-6 sm:py-8 md:py-10">
+      <PageHeader
+        title="Riwayat Pembayaran WARU"
+        description="Audit dan catat seluruh riwayat transaksi pembayaran meja warung."
+        badge="Audit & Transaksi Kasir"
+      />
+
+      {payments.length === 0 ? (
+        <div className="rounded-2xl border border-slate-200 bg-white p-8 sm:p-12 text-center shadow-xs space-y-2">
+          <h2 className="text-base sm:text-lg font-bold text-[#293855]">Belum Ada Riwayat Pembayaran</h2>
+          <p className="text-xs sm:text-sm text-slate-500">
+            Transaksi pembayaran yang telah diproses kasir akan muncul di sini.
+          </p>
         </div>
-
-        {payments.length === 0 ? (
-          <div className="rounded-2xl border border-gray-200 bg-white p-8 sm:p-12 text-center shadow-2xs">
-            <h2 className="text-base sm:text-lg font-bold text-gray-900">Belum ada pembayaran</h2>
-            <p className="mt-1.5 text-xs sm:text-sm text-gray-500">
-              Transaksi pembayaran yang selesai akan muncul di sini.
-            </p>
-          </div>
-        ) : (
-          <>
-            <div className="space-y-4">
-              {payments.map((payment) => (
-                <Link
-                  key={payment._id}
-                  href={`/payment/${payment._id}`}
-                  className="block rounded-2xl border border-gray-200 bg-white p-5 transition hover:border-gray-300 hover:shadow-2xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black"
-                >
-                  <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                    <div>
-                      <div className="flex flex-wrap items-center gap-2.5">
-                        <h2 className="text-base sm:text-lg font-bold text-gray-900">
-                          Meja {payment.tableNumber}
-                        </h2>
-                        <span className={`rounded-full border px-2.5 py-0.5 text-xs font-semibold ${statusBadgeClass(payment.status)}`}>
-                          {statusLabel(payment.status)}
-                        </span>
-                        <span className="rounded-md bg-gray-100 px-2 py-0.5 text-[11px] font-semibold text-gray-600 uppercase border border-gray-200">
-                          {methodLabel(payment.method)}
-                        </span>
-                      </div>
-                      <p className="mt-1.5 text-xs font-mono text-gray-400">
-                        Order ID: {payment.orderId}
-                      </p>
-                      <p className="mt-1 text-xs text-gray-500">
-                        {formatDate(payment.createdAt)}
-                      </p>
+      ) : (
+        <>
+          <div className="space-y-4">
+            {payments.map((payment) => (
+              <Link
+                key={payment._id}
+                href={`/payment/${payment._id}`}
+                className="group block rounded-2xl border border-slate-200 bg-white p-5 transition-all duration-150 hover:border-slate-300 hover:shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6]"
+              >
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                  <div>
+                    <div className="flex flex-wrap items-center gap-2.5">
+                      <h2 className="text-base sm:text-lg font-black text-[#293855] group-hover:text-[#4265D6] transition-colors">
+                        Meja {payment.tableNumber}
+                      </h2>
+                      <span className={`rounded-md border px-2.5 py-0.5 text-xs font-semibold ${statusBadgeClass(payment.status)}`}>
+                        {statusLabel(payment.status)}
+                      </span>
+                      <span className="rounded-md bg-slate-100 px-2 py-0.5 text-[11px] font-bold text-[#293855] border border-slate-200">
+                        {methodLabel(payment.method)}
+                      </span>
                     </div>
-
-                    <div className="sm:text-right">
-                      <p className="text-xs text-gray-500 font-medium">Total Tagihan</p>
-                      <p className="font-bold text-base sm:text-lg text-gray-900">
-                        {formatRupiah(payment.totalAmount)}
-                      </p>
-                      <p className="mt-0.5 text-xs text-gray-500 font-medium">
-                        Bayar: {formatRupiah(payment.paidAmount)}
-                      </p>
-                    </div>
+                    <p className="mt-1.5 text-xs font-mono text-slate-400 font-medium">
+                      Order ID: {payment.orderId}
+                    </p>
+                    <p className="mt-1 text-xs text-slate-500 font-semibold">
+                      Waktu: {formatDate(payment.createdAt)}
+                    </p>
                   </div>
-                </Link>
-              ))}
-            </div>
 
-            <div className="mt-10 flex items-center justify-center gap-3 sm:gap-4">
-              <button
-                type="button"
-                disabled={!hasPrev}
-                onClick={() => loadPayments(page - 1)}
-                className="rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-xs sm:text-sm font-semibold text-gray-700 hover:bg-gray-50 disabled:bg-gray-50 disabled:text-gray-400 disabled:border-gray-200 disabled:cursor-not-allowed transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black min-h-[40px]"
-              >
-                ← Sebelumnya
-              </button>
+                  <div className="sm:text-right">
+                    <p className="text-xs text-slate-400 font-semibold uppercase">Total Tagihan</p>
+                    <p className="font-black text-base sm:text-lg text-[#293855]">
+                      {formatRupiah(payment.totalAmount)}
+                    </p>
+                    <p className="mt-0.5 text-xs text-slate-500 font-semibold">
+                      Dibayar: {formatRupiah(payment.paidAmount)}
+                    </p>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
 
-              <span className="text-xs sm:text-sm font-medium text-gray-600">
-                Halaman {page} dari {totalPages}
-              </span>
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-3 sm:gap-4 border-t border-slate-200/80 pt-6">
+            <Button
+              variant="outline"
+              disabled={!hasPrev}
+              onClick={() => loadPayments(page - 1)}
+              className="min-h-[40px]"
+            >
+              ← Sebelumnya
+            </Button>
 
-              <button
-                type="button"
-                disabled={!hasNext}
-                onClick={() => loadPayments(page + 1)}
-                className="rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-xs sm:text-sm font-semibold text-gray-700 hover:bg-gray-50 disabled:bg-gray-50 disabled:text-gray-400 disabled:border-gray-200 disabled:cursor-not-allowed transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black min-h-[40px]"
-              >
-                Berikutnya →
-              </button>
-            </div>
-          </>
-        )}
-      </section>
-    </main>
+            <span className="text-xs sm:text-sm font-semibold text-[#293855]">
+              Halaman {page} dari {totalPages}
+            </span>
+
+            <Button
+              variant="outline"
+              disabled={!hasNext}
+              onClick={() => loadPayments(page + 1)}
+              className="min-h-[40px]"
+            >
+              Berikutnya →
+            </Button>
+          </div>
+        </>
+      )}
+    </div>
   );
 }
+

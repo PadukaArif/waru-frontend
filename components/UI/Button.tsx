@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 type ButtonProps = {
   children: ReactNode;
   type?: "button" | "submit" | "reset";
-  variant?: "primary" | "secondary" | "outline" | "amber" | "danger";
+  variant?: "primary" | "secondary" | "outline" | "amber" | "danger" | "ghost";
   disabled?: boolean;
   loading?: boolean;
   onClick?: () => void;
@@ -27,6 +27,7 @@ export default function Button({
     outline: "border border-slate-300 bg-white text-[#293855] hover:bg-slate-50 hover:border-slate-400 focus-visible:ring-[#4265D6] font-medium",
     amber: "bg-[#F2AC20] text-[#1b263b] hover:bg-[#d99516] active:bg-[#bf8010] focus-visible:ring-[#F2AC20] font-bold shadow-xs",
     danger: "border border-red-200 bg-red-50 text-red-700 hover:bg-red-100 focus-visible:ring-red-600 font-semibold",
+    ghost: "border border-white/30 bg-transparent text-white hover:bg-white/10 hover:border-white focus-visible:ring-white font-medium",
   };
 
   const isDisabled = disabled || loading;

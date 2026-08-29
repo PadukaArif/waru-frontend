@@ -10,6 +10,10 @@ import {
   type OrderStatus,
   type PaymentMethod,
 } from "@/services/order";
+import {
+  getPaymentByOrderId,
+  type Payment,
+} from "@/services/payment";
 import Button from "@/components/UI/Button";
 import Input from "@/components/UI/Input";
 
@@ -62,6 +66,7 @@ export default function OrderDetailPage({
   const [submittingPayment, setSubmittingPayment] = useState(false);
   const [paymentError, setPaymentError] = useState("");
   const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [activePayment, setActivePayment] = useState<Payment | null>(null);
 
   const handleOpenPaymentModal = () => {
     if (!order) return;
@@ -69,6 +74,7 @@ export default function OrderDetailPage({
     setPaidAmount(order.totalAmount);
     setPaymentNotes("");
     setPaymentError("");
+    setActivePayment(null);
     setIsPaymentModalOpen(true);
   };
 
@@ -96,24 +102,60 @@ export default function OrderDetailPage({
         notes: paymentNotes || undefined,
       });
 
-      setShowSuccessToast(true);
-      setIsPaymentModalOpen(false);
+      if (paymentMethod === "cash") {
+        setShowSuccessToast(true);
+        setIsPaymentModalOpen(false);
 
-      const updatedOrder = await getOrderById(order._id);
-      setOrder(updatedOrder);
+        const updatedOrder = await getOrderById(order._id);
+        setOrder(updatedOrder);
 
-      setTimeout(() => {
-        setShowSuccessToast(false);
-      }, 4000);
+        setTimeout(() => {
+          setShowSuccessToast(false);
+        }, 4000);
+      } else {
+        // QRIS Flow
+        const paymentData = await getPaymentByOrderId(order._id);
+        setActivePayment(paymentData);
+      }
     } catch (error) {
-      console.error("Payment failed:", error);
-      setPaymentError(
-        error instanceof Error ? error.message : "Terjadi kesalahan saat memproses pembayaran"
-      );
+      console.warn("Payment failed:", error);
+      const errMsg = error instanceof Error ? error.message : "Terjadi kesalahan saat memproses pembayaran";
+      setPaymentError(errMsg);
     } finally {
       setSubmittingPayment(false);
     }
   };
+
+  // Polling check status pembayaran QRIS
+  useEffect(() => {
+    let intervalId: ReturnType<typeof setInterval> | undefined;
+
+    if (isPaymentModalOpen && activePayment && activePayment.method === "qris" && activePayment.status === "pending") {
+      intervalId = setInterval(async () => {
+        try {
+          const paymentData = await getPaymentByOrderId(order?._id || "");
+          if (paymentData && paymentData.status === "paid") {
+            setActivePayment(null);
+            setIsPaymentModalOpen(false);
+            setShowSuccessToast(true);
+
+            const updatedOrder = await getOrderById(order?._id || "");
+            setOrder(updatedOrder);
+
+            setTimeout(() => {
+              setShowSuccessToast(false);
+            }, 4000);
+          }
+        } catch (err) {
+          console.warn("Polling payment status failed:", err);
+        }
+      }, 2000);
+    }
+
+    return () => {
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, [isPaymentModalOpen, activePayment, order?._id]);
 
   useEffect(() => {
     async function loadOrder() {
@@ -288,7 +330,7 @@ export default function OrderDetailPage({
       {/* Modal Pembayaran */}
       {isPaymentModalOpen && order && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#293855]/60 p-4 backdrop-blur-xs">
-          <div className="w-full max-w-md overflow-hidden rounded-2xl bg-white p-6 shadow-xl border border-slate-200 space-y-5">
+          <div className="w-full max-w-md max-h-[90vh] overflow-y-auto rounded-2xl bg-white p-6 shadow-xl border border-slate-200 space-y-5">
             <div className="flex items-center justify-between border-b border-slate-100 pb-4">
               <h2 className="text-lg sm:text-xl font-bold text-[#293855]">Pembayaran Pesanan</h2>
               <button
@@ -309,115 +351,209 @@ export default function OrderDetailPage({
               </div>
             )}
 
-            <form onSubmit={handlePaymentSubmit} className="space-y-4">
-              <div>
-                <label className="block text-xs sm:text-sm font-bold text-[#293855] mb-2">
-                  Metode Pembayaran
-                </label>
-                <div className="grid grid-cols-2 gap-2">
-                  {(["cash", "transfer", "qris", "card"] as const).map((method) => {
-                    const labels: Record<PaymentMethod, string> = {
-                      cash: "Tunai (Cash)",
-                      transfer: "Transfer Bank",
-                      qris: "QRIS Direct",
-                      card: "Kartu Debit/Kredit",
-                    };
-                    const active = paymentMethod === method;
-                    return (
-                      <button
-                        key={method}
-                        type="button"
-                        onClick={() => {
-                          setPaymentMethod(method);
-                          if (method !== "cash") {
-                            setPaidAmount(order.totalAmount);
-                          }
-                        }}
-                        className={`flex items-center justify-center rounded-xl border-2 py-2.5 px-3 text-xs font-bold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6] min-h-[42px] ${
-                          active
-                            ? "border-[#4265D6] bg-[#4265D6] text-white shadow-xs"
-                            : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
-                        }`}
-                      >
-                        {labels[method]}
-                      </button>
-                    );
-                  })}
+            {activePayment && activePayment.method === "qris" ? (
+              <div className="space-y-6 text-center py-4">
+                <div className="space-y-2">
+                  <h3 className="text-sm font-bold text-[#293855]">Pindai QRIS untuk Bayar</h3>
+                  <p className="text-xs text-slate-500 font-semibold">Total Tagihan: {formatRupiah(order.totalAmount)}</p>
+                </div>
+                
+                <div className="relative mx-auto w-64 h-64 border border-slate-200 rounded-2xl shadow-xs overflow-hidden bg-white p-2">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={activePayment.qrUrl} alt="QRIS Code" className="w-full h-full object-contain" />
+                </div>
+                
+                <div className="space-y-3">
+                  <div className="rounded-xl bg-amber-50 border border-amber-200 p-3 text-left space-y-2">
+                    <p className="text-[10px] sm:text-xs text-amber-800 font-bold">
+                      💡 Info Sandbox Midtrans:
+                    </p>
+                    <p className="text-[10px] text-amber-700 font-semibold leading-relaxed">
+                      Salin **QR Image URL** di bawah ini, buka simulator QRIS Midtrans, lalu tempelkan ke kolom input simulator untuk membayar.
+                    </p>
+                    
+                    {activePayment.qrUrl && (
+                      <div className="space-y-1">
+                        <label className="text-[9px] font-bold text-slate-500">QR Code Image URL:</label>
+                        <div className="flex gap-2">
+                          <input
+                            type="text"
+                            readOnly
+                            value={activePayment.qrUrl}
+                            className="w-full text-[10px] border border-amber-300 rounded px-2 py-1 bg-white text-slate-600 focus:outline-none"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              navigator.clipboard.writeText(activePayment.qrUrl || "");
+                              alert("QR Image URL berhasil disalin!");
+                            }}
+                            className="shrink-0 bg-amber-600 hover:bg-amber-700 text-white text-[10px] font-bold px-2 py-1 rounded transition"
+                          >
+                            Salin
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    {activePayment.qrString && (
+                      <div className="space-y-1">
+                        <label className="text-[9px] font-bold text-slate-500">QR String (Alternatif):</label>
+                        <div className="flex gap-2">
+                          <input
+                            type="text"
+                            readOnly
+                            value={activePayment.qrString}
+                            className="w-full text-[10px] border border-amber-300 rounded px-2 py-1 bg-white text-slate-600 focus:outline-none"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              navigator.clipboard.writeText(activePayment.qrString || "");
+                              alert("QR String berhasil disalin!");
+                            }}
+                            className="shrink-0 bg-amber-600 hover:bg-amber-700 text-white text-[10px] font-bold px-2 py-1 rounded transition"
+                          >
+                            Salin
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                    
+                    <a
+                      href="https://simulator.sandbox.midtrans.com/v2/qris/payment"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block text-[11px] font-bold text-blue-600 hover:underline pt-1"
+                    >
+                      → Buka Simulator QRIS Midtrans Sandbox
+                    </a>
+                  </div>
+                  
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => {
+                      setActivePayment(null);
+                      setIsPaymentModalOpen(false);
+                    }}
+                    className="w-full py-3"
+                  >
+                    Tutup / Batal
+                  </Button>
                 </div>
               </div>
-
-              <div>
-                <label className="block text-xs sm:text-sm font-bold text-[#293855] mb-1.5">
-                  Total Tagihan
-                </label>
-                <div className="rounded-xl bg-slate-50 border border-slate-200 p-3 font-mono text-base font-black text-[#293855]">
-                  {formatRupiah(order.totalAmount)}
-                </div>
-              </div>
-
-              <Input
-                id="paidAmount"
-                label="Jumlah Bayar (Rp) *"
-                type="number"
-                required
-                min={0}
-                value={paidAmount || ""}
-                onChange={(e) => setPaidAmount(Number(e.target.value))}
-                placeholder="Masukkan nominal bayar..."
-              />
-
-              {paymentMethod === "cash" && paidAmount < order.totalAmount && (
-                <p className="text-xs text-red-600 font-semibold">
-                  Jumlah bayar minimal {formatRupiah(order.totalAmount)}
-                </p>
-              )}
-
-              {paymentMethod === "cash" && paidAmount >= order.totalAmount && (
-                <div className="space-y-1">
-                  <label className="block text-xs font-semibold text-slate-500">
-                    Kembalian
+            ) : (
+              <form onSubmit={handlePaymentSubmit} className="space-y-4">
+                <div>
+                  <label className="block text-xs sm:text-sm font-bold text-[#293855] mb-2">
+                    Metode Pembayaran
                   </label>
-                  <div className="rounded-xl bg-emerald-50 border border-emerald-200 p-3 font-mono text-lg font-black text-[#204d28]">
-                    {formatRupiah(changeAmount)}
+                  <div className="grid grid-cols-2 gap-2">
+                    {(["cash", "qris"] as const).map((method) => {
+                      const labels: Record<PaymentMethod, string> = {
+                        cash: "Tunai (Cash)",
+                        transfer: "Transfer Bank",
+                        qris: "QRIS Direct",
+                        card: "Kartu Debit/Kredit",
+                      };
+                      const active = paymentMethod === method;
+                      return (
+                        <button
+                          key={method}
+                          type="button"
+                          onClick={() => {
+                            setPaymentMethod(method);
+                            if (method !== "cash") {
+                              setPaidAmount(order.totalAmount);
+                            }
+                          }}
+                          className={`flex items-center justify-center rounded-xl border-2 py-2.5 px-3 text-xs font-bold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6] min-h-[42px] ${
+                            active
+                              ? "border-[#4265D6] bg-[#4265D6] text-white shadow-xs"
+                              : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
+                          }`}
+                        >
+                          {labels[method]}
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
-              )}
 
-              <div>
-                <label htmlFor="notes" className="block text-xs sm:text-sm font-bold text-[#293855] mb-1.5">
-                  Catatan Pembayaran (Opsional)
-                </label>
-                <textarea
-                  id="notes"
-                  rows={2}
-                  value={paymentNotes}
-                  onChange={(e) => setPaymentNotes(e.target.value)}
-                  className="w-full rounded-xl border border-slate-300 bg-white px-3.5 sm:px-4 py-2.5 text-xs sm:text-sm text-[#293855] focus-visible:outline-2 focus-visible:outline-[#4265D6] transition"
-                  placeholder="Catatan pembayaran..."
+                <div>
+                  <label className="block text-xs sm:text-sm font-bold text-[#293855] mb-1.5">
+                    Total Tagihan
+                  </label>
+                  <div className="rounded-xl bg-slate-50 border border-slate-200 p-3 font-mono text-base font-black text-[#293855]">
+                    {formatRupiah(order.totalAmount)}
+                  </div>
+                </div>
+
+                <Input
+                  id="paidAmount"
+                  label="Jumlah Bayar (Rp) *"
+                  type="number"
+                  required
+                  min={0}
+                  value={paidAmount || ""}
+                  onChange={(e) => setPaidAmount(Number(e.target.value))}
+                  placeholder="Masukkan nominal bayar..."
                 />
-              </div>
 
-              <div className="flex gap-3 pt-2">
-                <Button
-                  type="button"
-                  variant="outline"
-                  disabled={submittingPayment}
-                  onClick={() => setIsPaymentModalOpen(false)}
-                  className="flex-1 min-h-[42px]"
-                >
-                  Batal
-                </Button>
-                <Button
-                  type="submit"
-                  variant="primary"
-                  loading={submittingPayment}
-                  disabled={isSubmitDisabled}
-                  className="flex-1 min-h-[42px]"
-                >
-                  Konfirmasi Bayar
-                </Button>
-              </div>
-            </form>
+                {paymentMethod === "cash" && paidAmount < order.totalAmount && (
+                  <p className="text-xs text-red-600 font-semibold">
+                    Jumlah bayar minimal {formatRupiah(order.totalAmount)}
+                  </p>
+                )}
+
+                {paymentMethod === "cash" && paidAmount >= order.totalAmount && (
+                  <div className="space-y-1">
+                    <label className="block text-xs font-semibold text-slate-500">
+                      Kembalian
+                    </label>
+                    <div className="rounded-xl bg-emerald-50 border border-emerald-200 p-3 font-mono text-lg font-black text-[#204d28]">
+                      {formatRupiah(changeAmount)}
+                    </div>
+                  </div>
+                )}
+
+                <div>
+                  <label htmlFor="notes" className="block text-xs sm:text-sm font-bold text-[#293855] mb-1.5">
+                    Catatan Pembayaran (Opsional)
+                  </label>
+                  <textarea
+                    id="notes"
+                    rows={2}
+                    value={paymentNotes}
+                    onChange={(e) => setPaymentNotes(e.target.value)}
+                    className="w-full rounded-xl border border-slate-300 bg-white px-3.5 sm:px-4 py-2.5 text-xs sm:text-sm text-[#293855] focus-visible:outline-2 focus-visible:outline-[#4265D6] transition"
+                    placeholder="Catatan pembayaran..."
+                  />
+                </div>
+
+                <div className="flex gap-3 pt-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    disabled={submittingPayment}
+                    onClick={() => setIsPaymentModalOpen(false)}
+                    className="flex-1 min-h-[42px]"
+                  >
+                    Batal
+                  </Button>
+                  <Button
+                    type="submit"
+                    variant="primary"
+                    loading={submittingPayment}
+                    disabled={isSubmitDisabled}
+                    className="flex-1 min-h-[42px]"
+                  >
+                    Konfirmasi Bayar
+                  </Button>
+                </div>
+              </form>
+            )}
           </div>
         </div>
       )}

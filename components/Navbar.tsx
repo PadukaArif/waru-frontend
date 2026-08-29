@@ -159,7 +159,7 @@ export default function Navbar() {
 
       {/* Mobile Navigation Menu Panel */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-slate-200 bg-white px-4 py-3 space-y-1.5 shadow-xs">
+        <div className="absolute top-16 left-0 right-0 z-50 border-b border-slate-200 bg-white px-4 py-3 space-y-1.5 shadow-md md:hidden">
           <Link
             href="/"
             onClick={() => setMobileMenuOpen(false)}

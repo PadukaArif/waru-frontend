@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Badge from "@/components/UI/Badge";
 
 type MenuCardProps = {
   id: string | number;
@@ -38,19 +39,16 @@ export default function MenuCard({
 
         <div className="flex flex-col items-end gap-1.5 shrink-0">
           {isRecommended && (
-            <span className="rounded-md border border-amber-200 bg-amber-50 px-2 py-0.5 text-[10px] font-bold text-[#d99516]">
+            <Badge variant="warning" className="text-[10px] py-0.5 px-2">
               Recommended
-            </span>
+            </Badge>
           )}
-          <span
-            className={`inline-flex items-center rounded-md border px-2 py-0.5 text-[11px] font-semibold ${
-              available
-                ? "bg-emerald-50 text-[#204d28] border-emerald-200"
-                : "bg-red-50 text-red-700 border-red-200"
-            }`}
+          <Badge
+            variant={available ? "success" : "danger"}
+            className="text-[11px] py-0.5 px-2"
           >
             {available ? "Tersedia" : "Habis"}
-          </span>
+          </Badge>
         </div>
       </div>
 
@@ -69,4 +67,5 @@ export default function MenuCard({
       </div>
     </Link>
   );
-}
+}
+

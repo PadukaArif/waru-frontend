@@ -13,6 +13,10 @@ export interface Payment {
   method: PaymentMethod;
   status: PaymentStatus;
   notes?: string;
+  transactionId?: string;
+  midtransOrderId?: string;
+  qrString?: string;
+  qrUrl?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -40,4 +44,8 @@ export async function getPayments(
 
 export async function getPaymentById(id: string): Promise<Payment> {
   return apiRequest<Payment>(`/payment/${id}`);
+}
+
+export async function getPaymentByOrderId(orderId: string): Promise<Payment> {
+  return apiRequest<Payment>(`/payment/order/${orderId}`);
 }
