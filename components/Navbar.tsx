@@ -54,9 +54,14 @@ export default function Navbar() {
               </Link>
 
               {userRole === "boss" && (
-                <Link href="/admin" className="text-sm font-medium hover:opacity-70">
-                  Admin
-                </Link>
+                <>
+                  <Link href="/admin" className="text-sm font-medium hover:opacity-70">
+                    Admin
+                  </Link>
+                  <Link href="/admin/assistant" className="text-sm font-medium hover:opacity-70">
+                    AI Assistant
+                  </Link>
+                </>
               )}
 
               <button

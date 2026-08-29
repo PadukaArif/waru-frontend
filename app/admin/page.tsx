@@ -16,12 +16,14 @@ export default function AdminIndexPage() {
           </p>
         </div>
 
-        <div className="grid gap-6 sm:grid-cols-2">
-          <div className="rounded-xl border p-6 hover:shadow-sm transition bg-white">
-            <h2 className="text-xl font-semibold">Kelola Menu</h2>
-            <p className="mt-2 text-sm text-gray-600">
-              Tambah, perbarui, atau hapus item menu makanan dan minuman WARU.
-            </p>
+        <div className="grid gap-6 sm:grid-cols-3">
+          <div className="rounded-xl border p-6 hover:shadow-sm transition bg-white flex flex-col justify-between">
+            <div>
+              <h2 className="text-xl font-semibold">Kelola Menu</h2>
+              <p className="mt-2 text-sm text-gray-600">
+                Tambah, perbarui, atau hapus item menu makanan dan minuman WARU.
+              </p>
+            </div>
             <div className="mt-6">
               <Link
                 href="/admin/menu"
@@ -32,11 +34,30 @@ export default function AdminIndexPage() {
             </div>
           </div>
 
-          <div className="rounded-xl border p-6 bg-gray-50 opacity-80">
-            <h2 className="text-xl font-semibold text-gray-700">Analytics & Laporan</h2>
-            <p className="mt-2 text-sm text-gray-500">
-              Fitur laporan penjualan dan analisis warung (segera hadir).
-            </p>
+          <div className="rounded-xl border p-6 hover:shadow-sm transition bg-white flex flex-col justify-between">
+            <div>
+              <h2 className="text-xl font-semibold">Business Assistant</h2>
+              <p className="mt-2 text-sm text-gray-600">
+                Konsultasikan kondisi bisnis dan rekomendasi AI dari data operasional WARU.
+              </p>
+            </div>
+            <div className="mt-6">
+              <Link
+                href="/admin/assistant"
+                className="inline-block rounded-lg bg-black px-5 py-2.5 text-sm font-medium text-white hover:bg-gray-800 transition"
+              >
+                Tanya Assistant &rarr;
+              </Link>
+            </div>
+          </div>
+
+          <div className="rounded-xl border p-6 bg-gray-50 opacity-80 flex flex-col justify-between">
+            <div>
+              <h2 className="text-xl font-semibold text-gray-700">Analytics & Laporan</h2>
+              <p className="mt-2 text-sm text-gray-500">
+                Fitur laporan penjualan dan analisis warung (segera hadir).
+              </p>
+            </div>
             <div className="mt-6">
               <span className="inline-block text-xs font-medium text-gray-400">
                 Dalam Pengembangan

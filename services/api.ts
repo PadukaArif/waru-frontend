@@ -1,5 +1,15 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
+export class ApiError extends Error {
+  status?: number;
+
+  constructor(message: string, status?: number) {
+    super(message);
+    this.name = "ApiError";
+    this.status = status;
+  }
+}
+
 function getStoredToken(): string | null {
   if (typeof window === "undefined") {
     return null;
@@ -44,18 +54,20 @@ export async function apiRequest<T>(
           window.location.href = "/login";
         }
       }
-      throw new Error(
-        data.message || "Akses ditolak. Token tidak valid atau sesi telah berakhir."
+      throw new ApiError(
+        data.message || "Akses ditolak. Token tidak valid atau sesi telah berakhir.",
+        401
       );
     }
 
     if (response.status === 403) {
-      throw new Error(
-        data.message || "Akses ditolak. Anda tidak memiliki hak akses untuk resource ini."
+      throw new ApiError(
+        data.message || "Akses ditolak. Anda tidak memiliki hak akses untuk resource ini.",
+        403
       );
     }
 
-    throw new Error(data.message || "Terjadi kesalahan pada server");
+    throw new ApiError(data.message || "Terjadi kesalahan pada server", response.status);
   }
 
   return data;
