@@ -21,11 +21,11 @@ export default function PageHeader({
     >
       <div className="space-y-1">
         {badge && (
-          <span className="inline-flex items-center rounded-md bg-blue-50 px-2.5 py-0.5 text-xs font-semibold text-[#4265D6] border border-blue-100 mb-1">
+          <span className="inline-flex items-center rounded-md bg-blue-50 px-2.5 py-0.5 text-xs font-semibold text-blue-primary border border-blue-100 mb-1">
             {badge}
           </span>
         )}
-        <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#293855]">
+        <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-navy">
           {title}
         </h1>
         {description && (

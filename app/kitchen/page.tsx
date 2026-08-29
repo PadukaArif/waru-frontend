@@ -82,18 +82,27 @@ export default function KitchenDashboardPage() {
     return () => clearInterval(interval);
   }, [fetchOrders]);
 
+  const [successMessage, setSuccessMessage] = useState("");
+
   async function handleStatusChange(id: string, newStatus: KitchenStatus) {
     setUpdatingId(id);
+    setError("");
+    setSuccessMessage("");
     try {
       const updatedItem = await updateKitchenOrderStatus(id, newStatus);
       setItems((prev) =>
         prev.map((item) => (item._id === id ? { ...item, status: updatedItem.status } : item))
       );
+      if (newStatus === "done") {
+        setSuccessMessage("Pesanan selesai — stok bahan diperbarui otomatis.");
+      }
     } catch (err) {
       console.error("Failed to update status:", err);
-      const msg = err instanceof Error ? err.message : "Gagal mengubah status antrean.";
-      alert(msg);
-      setError(msg);
+      const msg = err instanceof Error ? err.message : "Pesanan belum dapat diselesaikan karena stok bahan tidak mencukupi.";
+      const displayMsg = msg.includes("stok") || msg.includes("tidak mencukupi")
+        ? `Pesanan belum dapat diselesaikan karena stok bahan tidak mencukupi. (${msg})`
+        : msg;
+      setError(displayMsg);
     } finally {
       setUpdatingId(null);
     }
@@ -143,6 +152,29 @@ export default function KitchenDashboardPage() {
         }
       />
 
+      {/* Success Alert */}
+      {successMessage && (
+        <div
+          role="status"
+          aria-live="polite"
+          className="rounded-xl bg-emerald-50 border border-emerald-200 p-4 text-xs sm:text-sm text-green-dark flex items-center justify-between gap-3 shadow-xs font-bold"
+        >
+          <div className="flex items-center gap-2.5">
+            <svg className="h-5 w-5 shrink-0 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+            <span>{successMessage}</span>
+          </div>
+          <button
+            type="button"
+            onClick={() => setSuccessMessage("")}
+            className="text-emerald-800 hover:text-emerald-950 font-bold text-xs shrink-0 px-2 py-1 rounded"
+          >
+            Tutup
+          </button>
+        </div>
+      )}
+
       {/* Error Alert */}
       {error && (
         <div
@@ -155,9 +187,13 @@ export default function KitchenDashboardPage() {
             </svg>
             <span>{error}</span>
           </div>
-          <Button variant="outline" onClick={fetchOrders} className="min-h-8 text-xs py-1 px-3">
-            Coba Lagi
-          </Button>
+          <button
+            type="button"
+            onClick={() => setError("")}
+            className="text-red-700 hover:text-red-950 font-bold text-xs shrink-0 px-2 py-1 rounded"
+          >
+            Tutup
+          </button>
         </div>
       )}
 

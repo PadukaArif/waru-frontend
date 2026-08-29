@@ -9,7 +9,7 @@ export default function Card({
 }: CardProps) {
   return (
     <div
-      className={`rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 shadow-xs text-[#293855] ${className}`}
+      className={`rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 shadow-xs text-navy ${className}`}
     >
       {children}
     </div>

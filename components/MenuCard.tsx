@@ -23,7 +23,7 @@ export default function MenuCard({
   return (
     <Link
       href={`/menu/${id}`}
-      className="group block rounded-2xl border border-slate-200 bg-white p-5 transition-all duration-150 hover:border-slate-300 hover:shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6]"
+      className="group block rounded-2xl border border-slate-200 bg-white p-5 transition-all duration-150 hover:border-slate-300 hover:shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-primary"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="space-y-1">
@@ -32,7 +32,7 @@ export default function MenuCard({
               {category}
             </span>
           )}
-          <h3 className="text-base sm:text-lg font-bold text-[#293855] group-hover:text-[#4265D6] transition-colors">
+          <h3 className="text-base sm:text-lg font-bold text-navy group-hover:text-blue-primary transition-colors">
             {name}
           </h3>
         </div>
@@ -57,11 +57,11 @@ export default function MenuCard({
       </p>
 
       <div className="mt-4 border-t border-slate-100 pt-3 flex items-center justify-between">
-        <p className="font-extrabold text-[#293855] text-sm sm:text-base">
+        <p className="font-extrabold text-navy text-sm sm:text-base">
           Rp {price.toLocaleString("id-ID")}
         </p>
 
-        <span className="text-xs font-semibold text-[#4265D6] group-hover:underline">
+        <span className="text-xs font-semibold text-blue-primary group-hover:underline">
           Detail →
         </span>
       </div>

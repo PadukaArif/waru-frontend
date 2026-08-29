@@ -312,7 +312,7 @@ export default function OrderDetailPage({
             Rincian Item Pesanan
           </h2>
 
-          <div className="divide-y divide-slate-100">
+          <div className="divide-y ">
             {order.items.map((item) => (
               <div
                 key={item.menuId}

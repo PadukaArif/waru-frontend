@@ -85,11 +85,10 @@ export default function AdminAnalyticsPage() {
                 key={tab.key}
                 type="button"
                 onClick={() => setPeriod(tab.key)}
-                className={`px-3.5 py-1.5 text-xs sm:text-sm font-bold rounded-lg transition-all cursor-pointer ${
-                  active
+                className={`px-3.5 py-1.5 text-xs sm:text-sm font-bold rounded-lg transition-all cursor-pointer ${active
                     ? "bg-white text-blue-primary shadow-xs"
                     : "text-slate-600 hover:text-navy hover:bg-slate-200/50"
-                }`}
+                  }`}
               >
                 {tab.label}
               </button>
@@ -268,13 +267,22 @@ export default function AdminAnalyticsPage() {
                 </span>
               </div>
               <div className="mt-3">
-                <div className="text-2xl sm:text-3xl font-black text-navy tracking-tight flex items-center gap-1.5">
-                  {data.reviews.averageRating.toFixed(1)}{" "}
-                  <span className="text-sm font-normal text-slate-400">/ 5.0</span>
-                </div>
-                <div className="mt-1 text-xs text-slate-500 font-medium">
-                  Berdasarkan {data.reviews.totalReviews} ulasan pelanggan
-                </div>
+                {data.reviews.totalReviews === 0 ? (
+                  <div>
+                    <div className="text-base font-extrabold text-navy">Belum ada ulasan</div>
+                    <div className="mt-1 text-xs text-slate-400 font-medium">0 ulasan pelanggan</div>
+                  </div>
+                ) : (
+                  <div>
+                    <div className="text-2xl sm:text-3xl font-black text-navy tracking-tight flex items-center gap-1.5">
+                      {data.reviews.averageRating.toFixed(1)}{" "}
+                      <span className="text-sm font-normal text-slate-400">/ 5.0</span>
+                    </div>
+                    <div className="mt-1 text-xs text-slate-500 font-medium">
+                      Berdasarkan {data.reviews.totalReviews} ulasan pelanggan
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -367,9 +375,8 @@ export default function AdminAnalyticsPage() {
                         </div>
                         <div className="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
                           <div
-                            className={`h-full rounded-full transition-all duration-300 ${
-                              isCash ? "bg-amber-warm" : "bg-blue-primary"
-                            }`}
+                            className={`h-full rounded-full transition-all duration-300 ${isCash ? "bg-amber-warm" : "bg-blue-primary"
+                              }`}
                             style={{ width: `${percentage}%` }}
                           ></div>
                         </div>
@@ -412,7 +419,7 @@ export default function AdminAnalyticsPage() {
                         <th className="py-2.5 px-3 text-right">Total omzet</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-100">
+                    <tbody className="divide-y ">
                       {data.topMenuItems.map((item, idx) => (
                         <tr key={item.name} className="hover:bg-slate-50/80 transition-colors">
                           <td className="py-3 px-3 font-bold text-slate-400">#{idx + 1}</td>

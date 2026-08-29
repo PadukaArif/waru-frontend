@@ -37,8 +37,8 @@ function statusLabel(status: PaymentStatus) {
 
 function statusBadgeClass(status: PaymentStatus) {
   const classes: Record<PaymentStatus, string> = {
-    pending: "bg-amber-50 text-[#d99516] border-amber-200",
-    paid: "bg-emerald-50 text-[#204d28] border-emerald-200 font-bold",
+    pending: "bg-amber-50 text-amber-hover border-amber-200",
+    paid: "bg-emerald-50 text-green-dark border-emerald-200 font-bold",
     failed: "bg-red-50 text-red-800 border-red-200 font-bold",
     refunded: "bg-slate-100 text-slate-700 border-slate-300",
   };
@@ -106,7 +106,7 @@ export default function PaymentDetailPage({ params }: PaymentDetailPageProps) {
     return (
       <div className="page-container py-12 flex items-center justify-center min-h-[50vh]">
         <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-xs space-y-4">
-          <h1 className="text-xl font-bold text-[#293855]">Gagal Memuat Detail Pembayaran</h1>
+          <h1 className="text-xl font-bold text-navy">Gagal Memuat Detail Pembayaran</h1>
           <p className="text-xs sm:text-sm text-slate-600">{error || "Detail pembayaran tidak ditemukan."}</p>
           <Link href="/payment">
             <Button variant="outline">
@@ -122,7 +122,7 @@ export default function PaymentDetailPage({ params }: PaymentDetailPageProps) {
     <div className="page-container py-6 sm:py-8 md:py-10 max-w-2xl space-y-6">
       <Link
         href="/payment"
-        className="inline-flex items-center text-xs sm:text-sm font-semibold text-[#4265D6] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6] rounded px-1"
+        className="inline-flex items-center text-xs sm:text-sm font-semibold text-blue-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-primary rounded px-1"
       >
         ← Kembali ke Riwayat Pembayaran
       </Link>
@@ -134,7 +134,7 @@ export default function PaymentDetailPage({ params }: PaymentDetailPageProps) {
               <p className="text-[11px] font-extrabold uppercase tracking-wider text-slate-400">
                 Audit Pembayaran Kasir
               </p>
-              <h1 className="mt-1 text-2xl sm:text-3xl font-black text-[#293855]">
+              <h1 className="mt-1 text-2xl sm:text-3xl font-black text-navy">
                 Meja {payment.tableNumber}
               </h1>
               <p className="mt-1 text-xs text-slate-500 font-mono">
@@ -152,13 +152,13 @@ export default function PaymentDetailPage({ params }: PaymentDetailPageProps) {
           <div className="grid grid-cols-2 gap-y-4 gap-x-6 text-xs sm:text-sm border-b border-slate-100 pb-6">
             <div>
               <p className="text-slate-400 font-semibold uppercase text-[10px]">Metode Pembayaran</p>
-              <p className="mt-1 font-bold text-[#293855]">
+              <p className="mt-1 font-bold text-navy">
                 {methodLabel(payment.method)}
               </p>
             </div>
             <div>
               <p className="text-slate-400 font-semibold uppercase text-[10px]">Tanggal & Waktu</p>
-              <p className="mt-1 font-semibold text-[#293855]">
+              <p className="mt-1 font-semibold text-navy">
                 {formatDate(payment.createdAt)}
               </p>
             </div>
@@ -166,10 +166,10 @@ export default function PaymentDetailPage({ params }: PaymentDetailPageProps) {
               <p className="text-slate-400 font-semibold uppercase text-[10px]">Referensi Pesanan Meja</p>
               <Link
                 href={`/order/${payment.orderId}?from=payment&paymentId=${payment._id}`}
-                className="mt-1 inline-flex items-center gap-1.5 font-bold text-[#4265D6] hover:underline transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6] rounded"
+                className="mt-1 inline-flex items-center gap-1.5 font-bold text-blue-primary hover:underline transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-primary rounded"
               >
                 Lihat Detail Pesanan (Order ID: {payment.orderId})
-                <svg className="h-4 w-4 text-[#4265D6]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="h-4 w-4 text-blue-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                 </svg>
               </Link>
@@ -179,21 +179,21 @@ export default function PaymentDetailPage({ params }: PaymentDetailPageProps) {
           <div className="space-y-3 border-b border-slate-100 pb-6">
             <div className="flex justify-between items-center text-xs sm:text-sm">
               <span className="text-slate-500 font-semibold">Total Tagihan Pesanan</span>
-              <span className="font-bold text-[#293855]">{formatRupiah(payment.totalAmount)}</span>
+              <span className="font-bold text-navy">{formatRupiah(payment.totalAmount)}</span>
             </div>
             <div className="flex justify-between items-center text-xs sm:text-sm">
               <span className="text-slate-500 font-semibold">Nominal Dibayar</span>
-              <span className="font-bold text-[#293855]">{formatRupiah(payment.paidAmount)}</span>
+              <span className="font-bold text-navy">{formatRupiah(payment.paidAmount)}</span>
             </div>
             <div className="flex justify-between items-center text-base sm:text-lg font-black pt-3.5 border-t border-slate-100">
-              <span className="text-[#293855]">Kembalian (Change)</span>
-              <span className="text-[#204d28] font-black">{formatRupiah(payment.changeAmount)}</span>
+              <span className="text-navy">Kembalian (Change)</span>
+              <span className="text-green-dark font-black">{formatRupiah(payment.changeAmount)}</span>
             </div>
           </div>
 
           {payment.notes && (
             <div className="rounded-xl bg-slate-50 border border-slate-200 p-4 text-xs sm:text-sm space-y-1">
-              <p className="font-bold text-[#293855]">Catatan Transaksi</p>
+              <p className="font-bold text-navy">Catatan Transaksi</p>
               <p className="text-slate-600">{payment.notes}</p>
             </div>
           )}

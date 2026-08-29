@@ -20,11 +20,11 @@ export default function Badge({
   className = "",
 }: BadgeProps) {
   const variantClasses: Record<BadgeVariant, string> = {
-    success: "bg-emerald-50 text-[#204d28] border-emerald-200 font-bold",
-    warning: "bg-amber-50 text-[#d99516] border-amber-200 font-bold",
+    success: "bg-emerald-50 text-green-dark border-emerald-200 font-bold",
+    warning: "bg-amber-50 text-amber-hover border-amber-200 font-bold",
     danger: "bg-red-50 text-red-700 border-red-200 font-bold",
-    info: "bg-blue-50 text-[#4265D6] border-blue-100 font-bold",
-    neutral: "bg-slate-100 text-[#293855] border-slate-200 font-semibold",
+    info: "bg-blue-50 text-blue-primary border-blue-100 font-bold",
+    neutral: "bg-slate-100 text-navy border-slate-200 font-semibold",
     amber: "bg-amber-500 text-slate-900 border-amber-200 font-bold",
   };
 

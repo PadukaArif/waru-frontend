@@ -50,12 +50,12 @@ export default function RegisterPage() {
 
   return (
     <section className="page-container flex min-h-[calc(100vh-10rem)] items-center justify-center py-10">
-      <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs text-[#293855]">
+      <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs text-navy">
         <div className="mb-6 sm:mb-8 text-center sm:text-left">
-          <span className="inline-flex items-center rounded-md bg-blue-50 border border-blue-100 px-2.5 py-0.5 text-xs font-bold text-[#4265D6] uppercase tracking-wider mb-3">
+          <span className="inline-flex items-center rounded-md bg-blue-50 border border-blue-100 px-2.5 py-0.5 text-xs font-bold text-blue-primary uppercase tracking-wider mb-3">
             WARU POS
           </span>
-          <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-[#293855]">
+          <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-navy">
             Buat Akun Baru
           </h1>
           <p className="mt-1.5 text-xs sm:text-sm text-slate-600">
@@ -123,7 +123,7 @@ export default function RegisterPage() {
             Sudah punya akun?{" "}
             <Link
               href="/login"
-              className="font-bold text-[#4265D6] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6] rounded px-1"
+              className="font-bold text-blue-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-primary rounded px-1"
             >
               Masuk di sini
             </Link>

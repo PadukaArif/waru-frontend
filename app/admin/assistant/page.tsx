@@ -63,7 +63,7 @@ function formatMessageContent(content: string): ReactNode {
                 ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y ">
               {tableDataRows.map((row, rIdx) => (
                 <tr key={rIdx} className="hover:bg-slate-50/60">
                   {row.map((cell, cIdx) => (
@@ -146,35 +146,24 @@ function formatMessageContent(content: string): ReactNode {
       lineText = trimmed.replace(/^\d+\.\s+/, "");
     }
 
-    // Parse bold **text**
-    const boldRegex = /\*\*(.*?)\*\*/g;
-    const parts: ReactNode[] = [];
-    let lastIndex = 0;
-    let match: RegExpExecArray | null;
-
-    while ((match = boldRegex.exec(lineText)) !== null) {
-      if (match.index > lastIndex) {
-        parts.push(lineText.substring(lastIndex, match.index));
+    // Parse bold **text** safely without infinite regex loops
+    const parts = lineText.split(/(\*\*.*?\*\*)/g);
+    const renderedParts = parts.map((part, pIdx) => {
+      if (part.startsWith("**") && part.endsWith("**") && part.length >= 4) {
+        return (
+          <strong key={pIdx} className="font-bold text-navy">
+            {part.slice(2, -2)}
+          </strong>
+        );
       }
-      parts.push(
-        <strong key={match.index} className="font-bold text-navy">
-          {match[1]}
-        </strong>
-      );
-      lastIndex = boldRegex.lastIndex;
-    }
-
-    if (lastIndex < lineText.length) {
-      parts.push(lineText.substring(lastIndex));
-    }
-
-    const renderedText = parts.length > 0 ? parts : lineText;
+      return part;
+    });
 
     if (isBullet) {
       processedElements.push(
         <div key={`bullet-${idx}`} className="flex items-start gap-2 my-1 text-slate-800 text-xs sm:text-sm leading-relaxed pl-1">
           <span className="text-blue-primary select-none font-bold mt-0.5" aria-hidden="true">•</span>
-          <div className="flex-1">{renderedText}</div>
+          <div className="flex-1">{renderedParts}</div>
         </div>
       );
       continue;
@@ -188,7 +177,7 @@ function formatMessageContent(content: string): ReactNode {
           <span className="text-xs font-bold text-blue-primary min-w-5 select-none mt-0.5" aria-hidden="true">
             {num}.
           </span>
-          <div className="flex-1">{renderedText}</div>
+          <div className="flex-1">{renderedParts}</div>
         </div>
       );
       continue;
@@ -196,7 +185,7 @@ function formatMessageContent(content: string): ReactNode {
 
     processedElements.push(
       <p key={`p-${idx}`} className="my-1.5 text-slate-800 text-xs sm:text-sm leading-relaxed">
-        {renderedText}
+        {renderedParts}
       </p>
     );
   }

@@ -32,8 +32,8 @@ function statusLabel(status: PaymentStatus) {
 
 function statusBadgeClass(status: PaymentStatus) {
   const classes: Record<PaymentStatus, string> = {
-    pending: "bg-amber-50 text-[#d99516] border-amber-200",
-    paid: "bg-emerald-50 text-[#204d28] border-emerald-200 font-bold",
+    pending: "bg-amber-50 text-amber-hover border-amber-200",
+    paid: "bg-emerald-50 text-green-dark border-emerald-200 font-bold",
     failed: "bg-red-50 text-red-800 border-red-200 font-bold",
     refunded: "bg-slate-100 text-slate-700 border-slate-300",
   };
@@ -123,7 +123,7 @@ export default function PaymentHistoryPage() {
     return (
       <div className="page-container py-12 flex items-center justify-center min-h-[50vh]">
         <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-xs space-y-4">
-          <h1 className="text-xl font-bold text-[#293855]">Gagal Memuat Pembayaran</h1>
+          <h1 className="text-xl font-bold text-navy">Gagal Memuat Pembayaran</h1>
           <p className="text-xs sm:text-sm text-slate-600">{error}</p>
           <Button
             variant="primary"
@@ -146,7 +146,7 @@ export default function PaymentHistoryPage() {
 
       {payments.length === 0 ? (
         <div className="rounded-2xl border border-slate-200 bg-white p-8 sm:p-12 text-center shadow-xs space-y-2">
-          <h2 className="text-base sm:text-lg font-bold text-[#293855]">Belum Ada Riwayat Pembayaran</h2>
+          <h2 className="text-base sm:text-lg font-bold text-navy">Belum Ada Riwayat Pembayaran</h2>
           <p className="text-xs sm:text-sm text-slate-500">
             Transaksi pembayaran yang telah diproses kasir akan muncul di sini.
           </p>
@@ -158,18 +158,18 @@ export default function PaymentHistoryPage() {
               <Link
                 key={payment._id}
                 href={`/payment/${payment._id}`}
-                className="group block rounded-2xl border border-slate-200 bg-white p-5 transition-all duration-150 hover:border-slate-300 hover:shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6]"
+                className="group block rounded-2xl border border-slate-200 bg-white p-5 transition-all duration-150 hover:border-slate-300 hover:shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-primary"
               >
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                   <div>
                     <div className="flex flex-wrap items-center gap-2.5">
-                      <h2 className="text-base sm:text-lg font-black text-[#293855] group-hover:text-[#4265D6] transition-colors">
+                      <h2 className="text-base sm:text-lg font-black text-navy group-hover:text-blue-primary transition-colors">
                         Meja {payment.tableNumber}
                       </h2>
                       <span className={`rounded-md border px-2.5 py-0.5 text-xs font-semibold ${statusBadgeClass(payment.status)}`}>
                         {statusLabel(payment.status)}
                       </span>
-                      <span className="rounded-md bg-slate-100 px-2 py-0.5 text-[11px] font-bold text-[#293855] border border-slate-200">
+                      <span className="rounded-md bg-slate-100 px-2 py-0.5 text-[11px] font-bold text-navy border border-slate-200">
                         {methodLabel(payment.method)}
                       </span>
                     </div>
@@ -183,7 +183,7 @@ export default function PaymentHistoryPage() {
 
                   <div className="sm:text-right">
                     <p className="text-xs text-slate-400 font-semibold uppercase">Total Tagihan</p>
-                    <p className="font-black text-base sm:text-lg text-[#293855]">
+                    <p className="font-black text-base sm:text-lg text-navy">
                       {formatRupiah(payment.totalAmount)}
                     </p>
                     <p className="mt-0.5 text-xs text-slate-500 font-semibold">
@@ -200,12 +200,12 @@ export default function PaymentHistoryPage() {
               variant="outline"
               disabled={!hasPrev}
               onClick={() => loadPayments(page - 1)}
-              className="min-h-[40px]"
+              className="min-h-10"
             >
               ← Sebelumnya
             </Button>
 
-            <span className="text-xs sm:text-sm font-semibold text-[#293855]">
+            <span className="text-xs sm:text-sm font-semibold text-navy">
               Halaman {page} dari {totalPages}
             </span>
 
@@ -213,7 +213,7 @@ export default function PaymentHistoryPage() {
               variant="outline"
               disabled={!hasNext}
               onClick={() => loadPayments(page + 1)}
-              className="min-h-[40px]"
+              className="min-h-10"
             >
               Berikutnya →
             </Button>

@@ -27,9 +27,9 @@ function statusLabel(status: OrderStatus) {
 
 function statusBadgeClass(status: OrderStatus) {
   const classes: Record<OrderStatus, string> = {
-    pending: "bg-amber-50 text-[#d99516] border-amber-200",
-    processing: "bg-blue-50 text-[#4265D6] border-blue-200",
-    completed: "bg-emerald-50 text-[#204d28] border-emerald-200",
+    pending: "bg-amber-50 text-amber-hover border-amber-200",
+    processing: "bg-blue-50 text-blue-primary border-blue-200",
+    completed: "bg-emerald-50 text-green-dark border-emerald-200",
     cancelled: "bg-red-50 text-red-700 border-red-200",
   };
   return classes[status] || "bg-slate-100 text-slate-700 border-slate-200";
@@ -110,7 +110,7 @@ export default function OrdersPage() {
     return (
       <div className="page-container py-12 flex items-center justify-center min-h-[50vh]">
         <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-xs space-y-4">
-          <h1 className="text-xl font-bold text-[#293855]">
+          <h1 className="text-xl font-bold text-navy">
             Gagal Memuat Pesanan
           </h1>
 
@@ -146,7 +146,7 @@ export default function OrdersPage() {
 
       {orders.length === 0 ? (
         <div className="rounded-2xl border border-slate-200 bg-white p-8 sm:p-12 text-center shadow-xs space-y-2">
-          <h2 className="text-base sm:text-lg font-bold text-[#293855]">
+          <h2 className="text-base sm:text-lg font-bold text-navy">
             Belum Ada Pesanan Aktif
           </h2>
 
@@ -161,12 +161,12 @@ export default function OrdersPage() {
               <Link
                 key={order._id}
                 href={`/order/${order._id}`}
-                className="group block rounded-2xl border border-slate-200 bg-white p-5 transition-all duration-150 hover:border-slate-300 hover:shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6]"
+                className="group block rounded-2xl border border-slate-200 bg-white p-5 transition-all duration-150 hover:border-slate-300 hover:shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-primary"
               >
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                   <div>
                     <div className="flex flex-wrap items-center gap-3">
-                      <h2 className="text-base sm:text-lg font-black text-[#293855] group-hover:text-[#4265D6] transition-colors">
+                      <h2 className="text-base sm:text-lg font-black text-navy group-hover:text-blue-primary transition-colors">
                         Meja {order.tableNumber}
                       </h2>
 
@@ -181,7 +181,7 @@ export default function OrdersPage() {
                   </div>
 
                   <div className="sm:text-right">
-                    <p className="font-black text-base sm:text-lg text-[#293855]">
+                    <p className="font-black text-base sm:text-lg text-navy">
                       {formatRupiah(order.totalAmount)}
                     </p>
 
@@ -198,7 +198,7 @@ export default function OrdersPage() {
                         key={item.menuId}
                         className="font-medium bg-slate-50 border border-slate-200 px-2.5 py-1 rounded-md"
                       >
-                        {item.name} <strong className="text-[#293855]">× {item.quantity}</strong>
+                        {item.name} <strong className="text-navy">× {item.quantity}</strong>
                       </span>
                     ))}
                   </div>
@@ -212,12 +212,12 @@ export default function OrdersPage() {
               variant="outline"
               disabled={!hasPrev}
               onClick={() => loadOrders(page - 1)}
-              className="min-h-[40px]"
+              className="min-h-10"
             >
               ← Sebelumnya
             </Button>
 
-            <span className="text-xs sm:text-sm font-semibold text-[#293855]">
+            <span className="text-xs sm:text-sm font-semibold text-navy">
               Halaman {page} dari {totalPages}
             </span>
 
@@ -225,7 +225,7 @@ export default function OrdersPage() {
               variant="outline"
               disabled={!hasNext}
               onClick={() => loadOrders(page + 1)}
-              className="min-h-[40px]"
+              className="min-h-10"
             >
               Berikutnya →
             </Button>

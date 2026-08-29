@@ -26,12 +26,12 @@ export default function Home() {
       {/* 1. Hero Section (First Viewport) */}
       <section className="flex flex-col items-start justify-center min-h-[calc(100vh-14rem)] py-6">
         <div className="max-w-3xl space-y-6">
-          <div className="inline-flex items-center gap-2 rounded-md bg-blue-50 border border-blue-100 px-3 py-1 text-xs font-semibold text-[#4265D6]">
-            <span className="h-2 w-2 rounded-full bg-[#4265D6]"></span>
+          <div className="inline-flex items-center gap-2 rounded-md bg-blue-50 border border-blue-100 px-3 py-1 text-xs font-semibold text-blue-primary">
+            <span className="h-2 w-2 rounded-full bg-blue-primary"></span>
             WARU • Warung Analytics Resource Utility
           </div>
 
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-[#293855] leading-[1.15]">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-navy leading-[1.15]">
             Sistem POS & Analitik Operasional Warung Modern.
           </h1>
 
@@ -73,25 +73,25 @@ export default function Home() {
         {/* Operational Highlights Band */}
         <div className="mt-12 sm:mt-16 grid grid-cols-1 sm:grid-cols-3 gap-4 w-full border-t border-b border-slate-200/80 py-6">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-[#4265D6]">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-primary">
               <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
             </div>
             <div>
-              <h3 className="text-sm font-bold text-[#293855]">POS & Meja Direct</h3>
+              <h3 className="text-sm font-bold text-navy">POS & Meja Direct</h3>
               <p className="text-xs text-slate-500">Pencatatan pesanan real-time</p>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-[#F2AC20]">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-warm">
               <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
             <div>
-              <h3 className="text-sm font-bold text-[#293855]">Audit Pembayaran</h3>
+              <h3 className="text-sm font-bold text-navy">Audit Pembayaran</h3>
               <p className="text-xs text-slate-500">Riwayat transaksi terverifikasi</p>
             </div>
           </div>
@@ -103,7 +103,7 @@ export default function Home() {
               </svg>
             </div>
             <div>
-              <h3 className="text-sm font-bold text-[#293855]">Asisten Operasional AI</h3>
+              <h3 className="text-sm font-bold text-navy">Asisten Operasional AI</h3>
               <p className="text-xs text-slate-500">Analisis bisnis berbasis data</p>
             </div>
           </div>
@@ -113,10 +113,10 @@ export default function Home() {
       {/* 2. Capability Grid Section */}
       <section className="space-y-8">
         <div className="space-y-2">
-          <span className="text-xs font-bold uppercase tracking-wider text-[#4265D6]">
+          <span className="text-xs font-bold uppercase tracking-wider text-blue-primary">
             Fitur Utama
           </span>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-[#293855]">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-navy">
             Dirancang Untuk Efisiensi Operasional Warung
           </h2>
           <p className="text-sm text-slate-600 max-w-xl">
@@ -127,10 +127,10 @@ export default function Home() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           <Card className="flex flex-col justify-between hover:border-slate-300 transition-colors">
             <div className="space-y-3">
-              <div className="h-10 w-10 rounded-xl bg-blue-50 text-[#4265D6] flex items-center justify-center font-bold">
+              <div className="h-10 w-10 rounded-xl bg-blue-50 text-blue-primary flex items-center justify-center font-bold">
                 01
               </div>
-              <h3 className="text-base font-bold text-[#293855]">Katalog Menu</h3>
+              <h3 className="text-base font-bold text-navy">Katalog Menu</h3>
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                 Kelola item makanan dan minuman lengkap dengan foto, deskripsi, stok, dan harga.
               </p>
@@ -139,10 +139,10 @@ export default function Home() {
 
           <Card className="flex flex-col justify-between hover:border-slate-300 transition-colors">
             <div className="space-y-3">
-              <div className="h-10 w-10 rounded-xl bg-blue-50 text-[#4265D6] flex items-center justify-center font-bold">
+              <div className="h-10 w-10 rounded-xl bg-blue-50 text-blue-primary flex items-center justify-center font-bold">
                 02
               </div>
-              <h3 className="text-base font-bold text-[#293855]">Pemesanan Meja</h3>
+              <h3 className="text-base font-bold text-navy">Pemesanan Meja</h3>
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                 Pencatatan nomor meja dan daftar pesanan pelanggan yang langsung dapat diproses kasir & dapur.
               </p>
@@ -151,10 +151,10 @@ export default function Home() {
 
           <Card className="flex flex-col justify-between hover:border-slate-300 transition-colors">
             <div className="space-y-3">
-              <div className="h-10 w-10 rounded-xl bg-blue-50 text-[#4265D6] flex items-center justify-center font-bold">
+              <div className="h-10 w-10 rounded-xl bg-blue-50 text-blue-primary flex items-center justify-center font-bold">
                 03
               </div>
-              <h3 className="text-base font-bold text-[#293855]">Status Pembayaran</h3>
+              <h3 className="text-base font-bold text-navy">Status Pembayaran</h3>
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                 Pantau riwayat pembayaran, upload bukti transfer, dan status konfirmasi transaksi secara terpusat.
               </p>
@@ -163,10 +163,10 @@ export default function Home() {
 
           <Card className="flex flex-col justify-between hover:border-slate-300 transition-colors">
             <div className="space-y-3">
-              <div className="h-10 w-10 rounded-xl bg-blue-50 text-[#4265D6] flex items-center justify-center font-bold">
+              <div className="h-10 w-10 rounded-xl bg-blue-50 text-blue-primary flex items-center justify-center font-bold">
                 04
               </div>
-              <h3 className="text-base font-bold text-[#293855]">AI Business Assistant</h3>
+              <h3 className="text-base font-bold text-navy">AI Business Assistant</h3>
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                 Konsultasikan performa penjualan dan rekomendasi stok produk menggunakan asisten AI internal WARU.
               </p>
@@ -176,7 +176,7 @@ export default function Home() {
       </section>
 
       {/* 3. High-Contrast Product Banner */}
-      <section className="rounded-2xl bg-[#293855] text-white p-8 sm:p-12 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+      <section className="rounded-2xl bg-navy text-white p-8 sm:p-12 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         {mounted && isLoggedIn ? (
           <>
             <div className="space-y-2 max-w-xl">

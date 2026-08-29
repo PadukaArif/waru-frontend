@@ -22,9 +22,9 @@ export default function Button({
   ariaLabel,
 }: ButtonProps) {
   const variantStyles = {
-    primary: "bg-[#4265D6] text-white hover:bg-[#3352bc] active:bg-[#2844a4] focus-visible:ring-[#4265D6] shadow-xs font-semibold",
-    secondary: "bg-[#293855] text-white hover:bg-[#1b263b] active:bg-[#141d2e] focus-visible:ring-[#293855] shadow-xs font-semibold",
-    outline: "border border-slate-300 bg-white text-[#293855] hover:bg-slate-50 hover:border-slate-400 focus-visible:ring-[#4265D6] font-medium",
+    primary: "bg-blue-primary text-white hover:bg-[#3352bc] active:bg-[#2844a4] focus-visible:ring-blue-primary shadow-xs font-semibold",
+    secondary: "bg-navy text-white hover:bg-[#1b263b] active:bg-[#141d2e] focus-visible:ring-[#293855] shadow-xs font-semibold",
+    outline: "border border-slate-300 bg-white text-navy hover:bg-slate-50 hover:border-slate-400 focus-visible:ring-blue-primary font-medium",
     amber: "bg-[#F2AC20] text-[#1b263b] hover:bg-[#d99516] active:bg-[#bf8010] focus-visible:ring-[#F2AC20] font-bold shadow-xs",
     danger: "border border-red-200 bg-red-50 text-red-700 hover:bg-red-100 focus-visible:ring-red-600 font-semibold",
     ghost: "border border-white/30 bg-transparent text-white hover:bg-white/10 hover:border-white focus-visible:ring-white font-medium",
@@ -38,7 +38,9 @@ export default function Button({
       disabled={isDisabled}
       onClick={onClick}
       aria-label={ariaLabel}
-      className={`inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 sm:py-3 text-xs sm:text-sm transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60 min-h-[44px] cursor-pointer ${variantStyles[variant]} ${className}`}
+      className={`inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 sm:py-3 text-xs sm:text-sm transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 min-h-11 ${
+        isDisabled ? "cursor-not-allowed opacity-60" : "cursor-pointer"
+      } ${variantStyles[variant]} ${className}`}
     >
       {loading && (
         <svg

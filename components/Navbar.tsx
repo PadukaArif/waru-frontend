@@ -103,10 +103,18 @@ export default function Navbar() {
                   <Link
                     href="/admin"
                     className={`text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-primary rounded-lg px-3 py-1.5 ${
-                      isActive("/admin") && !isActive("/admin/assistant") && !isActive("/admin/analytics") ? "text-blue-primary bg-blue-50/80 font-bold" : "text-slate-600 hover:text-navy hover:bg-slate-100/70 font-medium"
+                      isActive("/admin") && !isActive("/admin/assistant") && !isActive("/admin/analytics") && !isActive("/admin/inventory") ? "text-blue-primary bg-blue-50/80 font-bold" : "text-slate-600 hover:text-navy hover:bg-slate-100/70 font-medium"
                     }`}
                   >
                     Admin
+                  </Link>
+                  <Link
+                    href="/admin/inventory"
+                    className={`text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-primary rounded-lg px-3 py-1.5 ${
+                      isActive("/admin/inventory") ? "text-blue-primary bg-blue-50/80 font-bold" : "text-slate-600 hover:text-navy hover:bg-slate-100/70 font-medium"
+                    }`}
+                  >
+                    Inventaris
                   </Link>
                   <Link
                     href="/admin/analytics"
@@ -239,10 +247,19 @@ export default function Navbar() {
                     href="/admin"
                     onClick={() => setMobileMenuOpen(false)}
                     className={`block rounded-lg px-3 py-2.5 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-primary ${
-                      isActive("/admin") && !isActive("/admin/assistant") && !isActive("/admin/analytics") ? "bg-blue-50/80 text-blue-primary" : "text-navy hover:bg-slate-100/70"
+                      isActive("/admin") && !isActive("/admin/assistant") && !isActive("/admin/analytics") && !isActive("/admin/inventory") ? "bg-blue-50/80 text-blue-primary" : "text-navy hover:bg-slate-100/70"
                     }`}
                   >
                     Admin
+                  </Link>
+                  <Link
+                    href="/admin/inventory"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`block rounded-lg px-3 py-2.5 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-primary ${
+                      isActive("/admin/inventory") ? "bg-blue-50/80 text-blue-primary" : "text-navy hover:bg-slate-100/70"
+                    }`}
+                  >
+                    Inventaris
                   </Link>
                   <Link
                     href="/admin/analytics"

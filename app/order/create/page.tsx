@@ -144,7 +144,7 @@ export default function CreateOrderPage() {
     <div className="page-container py-6 sm:py-8 md:py-10">
       <Link
         href="/order"
-        className="mb-4 inline-flex items-center text-xs sm:text-sm font-semibold text-[#4265D6] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6] rounded px-1"
+        className="mb-4 inline-flex items-center text-xs sm:text-sm font-semibold text-blue-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-primary rounded px-1"
       >
         ← Kembali ke Daftar Pesanan
       </Link>
@@ -166,7 +166,7 @@ export default function CreateOrderPage() {
         <div className="lg:col-span-7 space-y-4">
           <div className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 shadow-xs">
             <div className="flex items-center justify-between mb-5 border-b border-slate-100 pb-3">
-              <h2 className="text-base sm:text-lg font-bold text-[#293855]">Pilih Menu Kategori</h2>
+              <h2 className="text-base sm:text-lg font-bold text-navy">Pilih Menu Kategori</h2>
               <span className="text-xs text-slate-500 font-semibold">{menus.length} item tersedia</span>
             </div>
 
@@ -190,7 +190,7 @@ export default function CreateOrderPage() {
                       onClick={() => handleAddItem(menu)}
                       className={`group relative flex gap-3.5 overflow-hidden rounded-xl border p-3 transition-all duration-150 cursor-pointer select-none ${
                         cartItem
-                          ? "border-[#4265D6] bg-blue-50/40 shadow-xs"
+                          ? "border-blue-primary bg-blue-50/40 shadow-xs"
                           : "border-slate-200 bg-white hover:border-slate-300"
                       }`}
                     >
@@ -203,13 +203,13 @@ export default function CreateOrderPage() {
                       </div>
                       <div className="flex flex-col justify-between py-0.5 min-w-0 flex-1">
                         <div>
-                          <h3 className="font-bold text-xs sm:text-sm text-[#293855] truncate group-hover:text-[#4265D6] transition-colors">{menu.name}</h3>
+                          <h3 className="font-bold text-xs sm:text-sm text-navy truncate group-hover:text-blue-primary transition-colors">{menu.name}</h3>
                           <span className="text-[10px] text-slate-500 font-semibold">{menu.category}</span>
                         </div>
-                        <p className="font-black text-xs sm:text-sm text-[#293855]">{formatRupiah(menu.price)}</p>
+                        <p className="font-black text-xs sm:text-sm text-navy">{formatRupiah(menu.price)}</p>
                       </div>
                       {cartItem && (
-                        <span className="absolute top-2 right-2 flex h-5 w-5 items-center justify-center rounded-full bg-[#4265D6] text-[11px] font-black text-white shadow-xs">
+                        <span className="absolute top-2 right-2 flex h-5 w-5 items-center justify-center rounded-full bg-blue-primary text-[11px] font-black text-white shadow-xs">
                           {cartItem.quantity}
                         </span>
                       )}
@@ -224,7 +224,7 @@ export default function CreateOrderPage() {
         {/* Form and Cart Summary (Right) */}
         <div className="lg:col-span-5">
           <div className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 shadow-xs space-y-6 sticky top-20">
-            <h2 className="text-base sm:text-lg font-bold text-[#293855] border-b border-slate-100 pb-3">Rincian Order</h2>
+            <h2 className="text-base sm:text-lg font-bold text-navy border-b border-slate-100 pb-3">Rincian Order</h2>
 
             <form onSubmit={handleSubmit} className="space-y-5">
               {/* Form Details */}
@@ -252,7 +252,7 @@ export default function CreateOrderPage() {
                 />
 
                 <div>
-                  <label htmlFor="notes" className="block text-xs sm:text-sm font-bold text-[#293855] mb-1.5">
+                  <label htmlFor="notes" className="block text-xs sm:text-sm font-bold text-navy mb-1.5">
                     Catatan Pesanan (Opsional)
                   </label>
                   <textarea
@@ -261,7 +261,9 @@ export default function CreateOrderPage() {
                     disabled={submitting}
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
-                    className="w-full rounded-xl border border-slate-300 bg-white px-3.5 sm:px-4 py-2.5 text-xs sm:text-sm text-[#293855] focus-visible:outline-2 focus-visible:outline-[#4265D6] transition disabled:bg-slate-100 disabled:text-slate-400"
+                    className={`w-full rounded-xl border border-slate-300 px-3.5 sm:px-4 py-2.5 text-xs sm:text-sm focus-visible:outline-2 focus-visible:outline-blue-primary transition ${
+                      submitting ? "bg-slate-100 text-slate-400" : "bg-white text-navy"
+                    }`}
                     placeholder="Contoh: Tanpa pedas, es sedikit..."
                   />
                 </div>
@@ -269,17 +271,17 @@ export default function CreateOrderPage() {
 
               {/* Cart list */}
               <div>
-                <h3 className="text-xs sm:text-sm font-bold text-[#293855] mb-2.5">Daftar Item ({selectedItems.length})</h3>
+                <h3 className="text-xs sm:text-sm font-bold text-navy mb-2.5">Daftar Item ({selectedItems.length})</h3>
                 {selectedItems.length === 0 ? (
                   <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50/50 p-6 text-center text-xs text-slate-500 font-semibold">
                     Klik item menu di sebelah kiri untuk menambah ke keranjang.
                   </div>
                 ) : (
-                  <div className="divide-y divide-slate-100 border-y border-slate-200 max-h-64 overflow-y-auto pr-1">
+                  <div className="divide-y  border-y border-slate-200 max-h-64 overflow-y-auto pr-1">
                     {selectedItems.map((item) => (
                       <div key={item.menuId} className="flex items-center justify-between gap-3 py-3">
                         <div className="flex-1 min-w-0">
-                          <p className="font-bold text-xs sm:text-sm text-[#293855] truncate">{item.name}</p>
+                          <p className="font-bold text-xs sm:text-sm text-navy truncate">{item.name}</p>
                           <p className="text-[11px] text-slate-500 font-semibold">{formatRupiah(item.price)}</p>
                         </div>
 
@@ -290,19 +292,19 @@ export default function CreateOrderPage() {
                               type="button"
                               disabled={submitting}
                               onClick={() => handleUpdateQuantity(item.menuId, -1)}
-                              className="h-9 w-9 flex items-center justify-center text-sm font-extrabold text-[#293855] hover:bg-slate-200 transition disabled:opacity-50 active:bg-slate-300 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#4265D6]"
+                              className="h-9 w-9 flex items-center justify-center text-sm font-extrabold text-navy hover:bg-slate-200 transition disabled:opacity-50 active:bg-slate-300 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-primary"
                               aria-label="Kurangi jumlah"
                             >
                               -
                             </button>
-                            <span className="w-8 text-center text-xs font-black text-[#293855] font-mono select-none">
+                            <span className="w-8 text-center text-xs font-black text-navy font-mono select-none">
                               {item.quantity}
                             </span>
                             <button
                               type="button"
                               disabled={submitting}
                               onClick={() => handleUpdateQuantity(item.menuId, 1)}
-                              className="h-9 w-9 flex items-center justify-center text-sm font-extrabold text-[#293855] hover:bg-slate-200 transition disabled:opacity-50 active:bg-slate-300 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#4265D6]"
+                              className="h-9 w-9 flex items-center justify-center text-sm font-extrabold text-navy hover:bg-slate-200 transition disabled:opacity-50 active:bg-slate-300 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-primary"
                               aria-label="Tambah jumlah"
                             >
                               +
@@ -335,7 +337,7 @@ export default function CreateOrderPage() {
                     <span>Total Item</span>
                     <span>{selectedItems.length} jenis menu</span>
                   </div>
-                  <div className="flex justify-between items-center text-base sm:text-lg font-black text-[#293855] pt-2 border-t border-slate-100">
+                  <div className="flex justify-between items-center text-base sm:text-lg font-black text-navy pt-2 border-t border-slate-100">
                     <span>Total Tagihan</span>
                     <span>{formatRupiah(totalAmount)}</span>
                   </div>
