@@ -54,7 +54,7 @@ export default async function MenuPage({
                   className="group flex flex-col justify-between h-full overflow-hidden rounded-2xl border border-slate-200/60 bg-white shadow-xs transition-all duration-300 hover:border-slate-300/80 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-primary"
                 >
                   <div className="flex flex-col grow">
-                    <div className="aspect-16/10 overflow-hidden bg-slate-100 relative">
+                    <div className="aspect-4/3 overflow-hidden bg-slate-100 relative">
                       <MenuImage
                         src={menu.imageUrl}
                         alt={menu.name}
