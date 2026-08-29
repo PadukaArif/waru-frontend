@@ -46,60 +46,61 @@ export default async function MenuPage({
           </div>
         ) : (
           <>
-            <div className="grid gap-5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-6 md:gap-8 sm:grid-cols-2 lg:grid-cols-3 mt-8 sm:mt-10">
               {response.data.map((menu) => (
                 <Link
                   key={menu._id}
                   href={`/menu/${menu._id}`}
-                  className="group flex flex-col justify-between overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xs transition-all duration-150 hover:border-slate-300 hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6]"
+                  className="group flex flex-col justify-between h-full overflow-hidden rounded-2xl border border-slate-200/60 bg-white shadow-xs transition-all duration-300 hover:border-slate-300/80 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-primary"
                 >
-                  <div>
-                    <div className="aspect-4/3 overflow-hidden bg-slate-100 relative">
+                  <div className="flex flex-col grow">
+                    <div className="aspect-16/10 overflow-hidden bg-slate-100 relative">
                       <MenuImage
                         src={menu.imageUrl}
                         alt={menu.name}
-                        className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-200"
+                        className="h-full w-full object-cover object-center group-hover:scale-[1.02] transition-transform duration-300"
                       />
 
                       {menu.isRecommended && (
-                        <span className="absolute top-3 right-3 rounded-md border border-amber-200 bg-amber-500 text-slate-900 px-2.5 py-0.5 text-xs font-bold shadow-xs">
+                        <span className="absolute top-4 right-4 inline-flex items-center gap-1.5 rounded-full bg-white/95 backdrop-blur-xs px-3 py-1.5 text-[9px] font-black uppercase tracking-wider text-amber-warm shadow-sm border border-amber-warm/25 select-none">
+                          <span className="h-1.5 w-1.5 rounded-full bg-amber-warm animate-pulse" />
                           Recommended
                         </span>
                       )}
                     </div>
 
-                    <div className="p-5 space-y-3">
+                    <div className="p-5 space-y-3 grow">
                       <div className="flex items-start justify-between gap-3">
-                        <h2 className="text-base sm:text-lg font-extrabold text-[#293855] group-hover:text-[#4265D6] transition-colors leading-tight">
+                        <h2 className="text-base sm:text-lg font-black text-navy group-hover:text-blue-primary transition-colors leading-tight">
                           {menu.name}
                         </h2>
 
-                        <span className="shrink-0 text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
+                        <span className="shrink-0 text-[9px] font-extrabold text-slate-500 bg-slate-50 px-2 py-0.5 rounded-md border border-slate-200/60 uppercase tracking-wider">
                           {menu.category}
                         </span>
                       </div>
 
-                      <p className="line-clamp-2 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                      <p className="line-clamp-2 text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
                         {menu.description}
                       </p>
                     </div>
                   </div>
 
                   <div className="p-5 pt-0">
-                    <div className="flex items-center justify-between border-t border-slate-100 pt-3">
+                    <div className="flex items-center justify-between border-t border-slate-100 pt-4">
                       <div>
-                        <p className="text-[10px] font-semibold text-slate-400 uppercase">Harga</p>
-                        <p className="font-black text-[#293855] text-base sm:text-lg">
+                        <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Harga</p>
+                        <p className="font-black text-navy text-base sm:text-[19px] tracking-tight">
                           Rp {menu.price.toLocaleString("id-ID")}
                         </p>
                       </div>
 
                       {menu.isAvailable ? (
-                        <span className="rounded-md bg-emerald-50 border border-emerald-200 px-2.5 py-1 text-xs font-semibold text-[#204d28]">
+                        <span className="inline-flex items-center rounded-md bg-emerald-50 border border-emerald-200/60 px-2.5 py-1.5 text-[11px] font-black text-green-dark uppercase tracking-wider">
                           Tersedia
                         </span>
                       ) : (
-                        <span className="rounded-md bg-red-50 border border-red-200 px-2.5 py-1 text-xs font-semibold text-red-700">
+                        <span className="inline-flex items-center rounded-md bg-red-50 border border-red-200/60 px-2.5 py-1.5 text-[11px] font-black text-red-700 uppercase tracking-wider">
                           Habis
                         </span>
                       )}
@@ -113,28 +114,28 @@ export default async function MenuPage({
             <div className="mt-10 flex flex-wrap items-center justify-center gap-3 sm:gap-4 border-t border-slate-200/80 pt-6">
               {response.meta.hasPrev ? (
                 <Link href={`/menu?page=${page - 1}`}>
-                  <Button variant="outline" className="min-h-[40px]">
+                  <Button variant="outline" className="min-h-10">
                     ← Sebelumnya
                   </Button>
                 </Link>
               ) : (
-                <Button variant="outline" disabled className="min-h-[40px] opacity-40">
+                <Button variant="outline" disabled className="min-h-10 opacity-40">
                   ← Sebelumnya
                 </Button>
               )}
 
-              <span className="text-xs sm:text-sm font-semibold text-[#293855]">
+              <span className="text-xs sm:text-sm font-semibold text-navy">
                 Halaman {response.meta.page} dari {Math.max(response.meta.totalPages, 1)}
               </span>
 
               {response.meta.hasNext ? (
                 <Link href={`/menu?page=${page + 1}`}>
-                  <Button variant="outline" className="min-h-[40px]">
+                  <Button variant="outline" className="min-h-10">
                     Berikutnya →
                   </Button>
                 </Link>
               ) : (
-                <Button variant="outline" disabled className="min-h-[40px] opacity-40">
+                <Button variant="outline" disabled className="min-h-10 opacity-40">
                   Berikutnya →
                 </Button>
               )}
@@ -149,7 +150,7 @@ export default async function MenuPage({
     return (
       <div className="page-container py-12">
         <div className="rounded-2xl border border-slate-200 bg-white p-8 sm:p-12 text-center shadow-xs space-y-3">
-          <h1 className="text-lg sm:text-xl font-bold text-[#293855]">
+          <h1 className="text-lg sm:text-xl font-bold text-navy">
             Gagal Memuat Katalog Menu
           </h1>
           <p className="text-xs sm:text-sm text-slate-600">
