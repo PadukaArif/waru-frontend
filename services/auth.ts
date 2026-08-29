@@ -23,6 +23,14 @@ export interface LoginData {
     password: string;
 }
 
+let cachedToken: string | null = null;
+let cachedPayload: JwtPayload | null = null;
+
+export function clearAuthCache(): void {
+  cachedToken = null;
+  cachedPayload = null;
+}
+
 export async function register(data: RegisterData) {
     const response = await apiRequest<AuthResponse>("/auth/register", {
         method: "POST",
@@ -30,6 +38,7 @@ export async function register(data: RegisterData) {
     });
 
     localStorage.setItem("token", response.token);
+    clearAuthCache();
 
     return response;
 }
@@ -41,6 +50,7 @@ export async function login(data: LoginData) {
     });
 
     localStorage.setItem("token", response.token);
+    clearAuthCache();
 
     return response;
 }
@@ -49,6 +59,7 @@ export function logout() {
     if (typeof window !== "undefined") {
         localStorage.removeItem("token");
     }
+    clearAuthCache();
 }
 
 export interface JwtPayload {
@@ -62,11 +73,27 @@ export interface JwtPayload {
 export function getJwtPayload(): JwtPayload | null {
   if (typeof window === "undefined") return null;
   const token = localStorage.getItem("token");
-  if (!token) return null;
+  if (!token) {
+    clearAuthCache();
+    return null;
+  }
+
+  // Fast path: return cached payload if token string has not changed
+  if (token === cachedToken && cachedPayload) {
+    if (cachedPayload.exp && cachedPayload.exp * 1000 < Date.now()) {
+      localStorage.removeItem("token");
+      clearAuthCache();
+      return null;
+    }
+    return cachedPayload;
+  }
 
   try {
     const parts = token.split(".");
-    if (parts.length !== 3) return null;
+    if (parts.length !== 3) {
+      clearAuthCache();
+      return null;
+    }
     const base64Url = parts[1];
     let base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
     while (base64.length % 4 !== 0) {
@@ -81,10 +108,17 @@ export function getJwtPayload(): JwtPayload | null {
     const decoded: JwtPayload = JSON.parse(jsonPayload);
     if (decoded.exp && decoded.exp * 1000 < Date.now()) {
       localStorage.removeItem("token");
+      clearAuthCache();
       return null;
     }
+
+    // Cache the parsed token string and payload
+    cachedToken = token;
+    cachedPayload = decoded;
+
     return decoded;
   } catch {
+    clearAuthCache();
     return null;
   }
 }
