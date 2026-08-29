@@ -12,6 +12,9 @@ type InputProps = {
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   required?: boolean;
   disabled?: boolean;
+  min?: number | string;
+  max?: number | string;
+  step?: number | string;
   className?: string;
   autoComplete?: string;
 };
@@ -26,6 +29,9 @@ export default function Input({
   onChange,
   required = false,
   disabled = false,
+  min,
+  max,
+  step,
   className = "",
   autoComplete,
 }: InputProps) {
@@ -54,6 +60,9 @@ export default function Input({
           onChange={onChange}
           required={required}
           disabled={disabled}
+          min={min}
+          max={max}
+          step={step}
           autoComplete={autoComplete}
           className={`w-full rounded-xl border border-slate-300 bg-white px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm text-[#293855] placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6] focus-visible:border-transparent transition-colors disabled:bg-slate-100 disabled:text-slate-400 min-h-[44px] ${
             isPasswordInput ? "pr-16" : ""
@@ -74,5 +83,6 @@ export default function Input({
     </div>
   );
 }
+
 
 
