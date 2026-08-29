@@ -172,10 +172,13 @@ export default function OrderDetailPage({
   useEffect(() => {
     let intervalId: ReturnType<typeof setInterval> | undefined;
 
-    if (waitingCashPayment && order && order.status !== "completed") {
+    const orderId = order?._id;
+    const orderStatus = order?.status;
+
+    if (waitingCashPayment && orderId && orderStatus !== "completed") {
       intervalId = setInterval(async () => {
         try {
-          const updatedOrder = await getOrderById(order._id);
+          const updatedOrder = await getOrderById(orderId);
           setOrder(updatedOrder);
           if (updatedOrder.status === "completed") {
             setWaitingCashPayment(false);
@@ -192,7 +195,7 @@ export default function OrderDetailPage({
     return () => {
       if (intervalId) clearInterval(intervalId);
     };
-  }, [waitingCashPayment, order]);
+  }, [waitingCashPayment, order?._id, order?.status]);
 
   useEffect(() => {
     setUserRole(getUserRole());
