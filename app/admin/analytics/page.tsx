@@ -17,7 +17,7 @@ function formatRupiah(amount: number): string {
   }).format(amount);
 }
 
-const PERIOD_LABELS: { key: AnalyticsPeriod; label: string } = [
+const PERIOD_LABELS: { key: AnalyticsPeriod; label: string }[] = [
   { key: "today", label: "Hari Ini" },
   { key: "week", label: "7 Hari Terakhir" },
   { key: "month", label: "Bulan Ini" },
@@ -156,7 +156,7 @@ export default function AdminAnalyticsPage() {
           {/* KPI Summary Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {/* Total Revenue */}
-            <div className="rounded-2xl border border-amber-warm/40 bg-gradient-to-br from-amber-warm/10 to-white p-5 shadow-xs flex flex-col justify-between">
+            <div className="rounded-2xl border border-amber-warm/40 bg-linear-to-br from-amber-warm/10 to-white p-5 shadow-xs flex flex-col justify-between">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold uppercase tracking-wider text-amber-warm">
                   Total Pendapatan
@@ -176,7 +176,7 @@ export default function AdminAnalyticsPage() {
             </div>
 
             {/* Total Orders */}
-            <div className="rounded-2xl border border-blue-100 bg-gradient-to-br from-blue-50/60 to-white p-5 shadow-xs flex flex-col justify-between">
+            <div className="rounded-2xl border border-blue-100 bg-linear-to-br from-blue-50/60 to-white p-5 shadow-xs flex flex-col justify-between">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold uppercase tracking-wider text-blue-primary">
                   Total Transaksi
