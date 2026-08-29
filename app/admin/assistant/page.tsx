@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef, useCallback, type ReactNode } from "react";
+import { useEffect, useState, useRef, useCallback, memo, type ReactNode } from "react";
 import {
   createAssistantSession,
   sendAssistantMessage,
@@ -54,7 +54,7 @@ function formatMessageContent(content: string): ReactNode {
       processedElements.push(
         <div key={`table-${tableIndex}`} className="my-3 overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-2xs">
           <table className="w-full text-xs text-left text-slate-700">
-            <thead className="bg-slate-100/80 text-[#293855] font-extrabold border-b border-slate-200">
+            <thead className="bg-slate-100/80 text-navy font-extrabold border-b border-slate-200">
               <tr>
                 {tableHeaderRow.map((cell, cIdx) => (
                   <th key={cIdx} className="px-3.5 py-2.5">
@@ -126,7 +126,7 @@ function formatMessageContent(content: string): ReactNode {
       processedElements.push(
         <h4
           key={`h-${idx}`}
-          className="text-xs font-black text-[#293855] uppercase tracking-wider mt-3 mb-1.5 first:mt-0"
+          className="text-xs font-black text-navy uppercase tracking-wider mt-3 mb-1.5"
         >
           {headingText}
         </h4>
@@ -157,7 +157,7 @@ function formatMessageContent(content: string): ReactNode {
         parts.push(lineText.substring(lastIndex, match.index));
       }
       parts.push(
-        <strong key={match.index} className="font-bold text-[#293855]">
+        <strong key={match.index} className="font-bold text-navy">
           {match[1]}
         </strong>
       );
@@ -173,7 +173,7 @@ function formatMessageContent(content: string): ReactNode {
     if (isBullet) {
       processedElements.push(
         <div key={`bullet-${idx}`} className="flex items-start gap-2 my-1 text-slate-800 text-xs sm:text-sm leading-relaxed pl-1">
-          <span className="text-[#4265D6] select-none font-bold mt-0.5" aria-hidden="true">•</span>
+          <span className="text-blue-primary select-none font-bold mt-0.5" aria-hidden="true">•</span>
           <div className="flex-1">{renderedText}</div>
         </div>
       );
@@ -185,7 +185,7 @@ function formatMessageContent(content: string): ReactNode {
       const num = numMatch ? numMatch[1] : "•";
       processedElements.push(
         <div key={`num-${idx}`} className="flex items-start gap-2 my-1 text-slate-800 text-xs sm:text-sm leading-relaxed pl-1">
-          <span className="text-xs font-bold text-[#4265D6] min-w-[1.25rem] select-none mt-0.5" aria-hidden="true">
+          <span className="text-xs font-bold text-blue-primary min-w-5 select-none mt-0.5" aria-hidden="true">
             {num}.
           </span>
           <div className="flex-1">{renderedText}</div>
@@ -207,6 +207,107 @@ function formatMessageContent(content: string): ReactNode {
 
   return processedElements;
 }
+
+/**
+ * Memoized Chat Message Item Component
+ * Prevents heavy Markdown/regex parsing (`formatMessageContent`) from re-executing
+ * when `inputText` state changes in the parent `BusinessAssistantPage` component.
+ */
+const AssistantMessageItem = memo(function AssistantMessageItem({
+  msg,
+}: {
+  msg: Message;
+}) {
+  return (
+    <article
+      aria-label={msg.role === "user" ? "Pesan Anda" : "Balasan Asisten"}
+      className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
+    >
+      <div className="max-w-[92%] sm:max-w-[85%] flex flex-col gap-1.5">
+        <div className="flex items-center justify-between gap-2 px-1 text-[11px] text-slate-500 font-semibold">
+          <span className="uppercase tracking-wider">
+            {msg.role === "user" ? "Anda (Boss)" : "WARU Business Assistant"}
+          </span>
+          {msg.timestamp && (
+            <span className="text-[10px] text-slate-400 font-normal">
+              {formatMessageTime(msg.timestamp)}
+            </span>
+          )}
+        </div>
+
+        <div
+          className={`rounded-2xl px-4.5 py-3.5 text-xs sm:text-sm shadow-xs wrap-break-word ${
+            msg.role === "user"
+              ? "bg-navy text-white rounded-br-xs font-medium"
+              : "bg-slate-50 text-navy rounded-bl-xs border border-slate-200"
+          }`}
+        >
+          {msg.role === "user" ? (
+            <p className="whitespace-pre-wrap leading-relaxed">{msg.content}</p>
+          ) : (
+            <div className="space-y-0.5">{formatMessageContent(msg.content)}</div>
+          )}
+        </div>
+
+        {/* Display Structured Business Insights if present */}
+        {msg.role === "assistant" && msg.insights && Array.isArray(msg.insights) && msg.insights.length > 0 && (
+          <div className="mt-3 space-y-2.5">
+            <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-500 uppercase tracking-wider px-1">
+              <svg className="h-3.5 w-3.5 text-blue-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+              <span>Business Intelligence & Rekomendasi</span>
+            </div>
+
+            <div className="space-y-2.5">
+              {msg.insights.map((insight, idx) => (
+                <div
+                  key={idx}
+                  className="bg-white border border-slate-200 border-l-4 border-l-blue-primary rounded-xl p-4 shadow-xs"
+                >
+                  <div className="flex flex-wrap items-center gap-2 mb-2">
+                    <span className="bg-blue-50 text-blue-primary border border-blue-100 text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded">
+                      {insight.category || "OPERASIONAL"}
+                    </span>
+                    <span className="text-xs sm:text-sm font-extrabold text-navy leading-snug">
+                      {insight.summary}
+                    </span>
+                  </div>
+
+                  {insight.recommendations && Array.isArray(insight.recommendations) && insight.recommendations.length > 0 && (
+                    <div className="mt-3 pt-3 border-t border-slate-100">
+                      <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wide block mb-2">
+                        Rekomendasi Tindakan Operasional:
+                      </span>
+                      <ul className="space-y-1.5">
+                        {insight.recommendations.map((rec, recIdx) => (
+                          <li
+                            key={recIdx}
+                            className="text-xs text-slate-700 leading-relaxed flex items-start gap-2 bg-slate-50 border border-slate-200/80 rounded-lg p-2.5"
+                          >
+                            <svg
+                              className="h-4 w-4 text-blue-primary shrink-0 mt-0.5"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span className="flex-1 font-semibold text-navy">{rec}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </article>
+  );
+});
 
 export default function BusinessAssistantPage() {
   const [sessionId, setSessionId] = useState<string | null>(null);
@@ -336,7 +437,7 @@ export default function BusinessAssistantPage() {
         badge="Akses Pemilik (Boss)"
         action={
           (sessionId || messages.length > 0) ? (
-            <Button variant="outline" onClick={handleResetSession} className="min-h-[38px]">
+            <Button variant="outline" onClick={handleResetSession} className="min-h-9.5">
               Mulai Sesi Baru
             </Button>
           ) : undefined
@@ -353,7 +454,7 @@ export default function BusinessAssistantPage() {
             <svg className="h-5 w-5 shrink-0 text-red-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
-            <span className="break-words">{error}</span>
+            <span className="wrap-break-word">{error}</span>
           </div>
           <button 
             type="button"
@@ -369,7 +470,7 @@ export default function BusinessAssistantPage() {
       {/* Chat Workspace */}
       <section
         aria-label="Workspace Percakapan Asisten"
-        className="flex-1 flex flex-col bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs min-h-[460px] sm:min-h-[520px]"
+        className="flex-1 flex flex-col bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs min-h-115 sm:min-h-130"
       >
         {/* Chat Messages Container */}
         <div
@@ -381,11 +482,11 @@ export default function BusinessAssistantPage() {
           {messages.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center text-center py-10 sm:py-16 px-4">
               <div className="h-12 w-12 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center mb-4 shadow-xs">
-                <svg className="h-6 w-6 text-[#4265D6]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="h-6 w-6 text-blue-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                 </svg>
               </div>
-              <h2 className="text-base sm:text-lg font-black text-[#293855]">Konsultasi Operasional Warung</h2>
+              <h2 className="text-base sm:text-lg font-black text-navy">Konsultasi Operasional Warung</h2>
               <p className="mt-1 text-xs sm:text-sm text-slate-500 max-w-md">
                 Pilih rekomendasi pertanyaan di bawah atau ketik analisis yang ingin Anda ketahui.
               </p>
@@ -394,9 +495,9 @@ export default function BusinessAssistantPage() {
                 <button
                   type="button"
                   onClick={() => setInputText("Dari data bisnis saya, apa masalah yang paling mendesak?")}
-                  className="min-h-[44px] p-4 text-xs font-semibold text-slate-700 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl transition flex flex-col justify-between group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6]"
+                  className="min-h-11 p-4 text-xs font-semibold text-slate-700 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl transition flex flex-col justify-between group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-primary"
                 >
-                  <span className="text-[#293855] font-extrabold mb-1 group-hover:text-[#4265D6]">
+                  <span className="text-navy font-extrabold mb-1 group-hover:text-blue-primary">
                     Masalah Mendesak
                   </span>
                   <span className="text-slate-500 leading-normal font-normal">
@@ -407,9 +508,9 @@ export default function BusinessAssistantPage() {
                 <button
                   type="button"
                   onClick={() => setInputText("Tampilkan ringkasan menu yang perlu segera ditambah stoknya.")}
-                  className="min-h-[44px] p-4 text-xs font-semibold text-slate-700 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl transition flex flex-col justify-between group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6]"
+                  className="min-h-11 p-4 text-xs font-semibold text-slate-700 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl transition flex flex-col justify-between group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-primary"
                 >
-                  <span className="text-[#293855] font-extrabold mb-1 group-hover:text-[#4265D6]">
+                  <span className="text-navy font-extrabold mb-1 group-hover:text-blue-primary">
                     Restok & Menu
                   </span>
                   <span className="text-slate-500 leading-normal font-normal">
@@ -421,94 +522,7 @@ export default function BusinessAssistantPage() {
           ) : (
             <div className="space-y-6">
               {messages.map((msg, index) => (
-                <article
-                  key={index}
-                  aria-label={msg.role === "user" ? "Pesan Anda" : "Balasan Asisten"}
-                  className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
-                >
-                  <div className="max-w-[92%] sm:max-w-[85%] flex flex-col gap-1.5">
-                    <div className="flex items-center justify-between gap-2 px-1 text-[11px] text-slate-500 font-semibold">
-                      <span className="uppercase tracking-wider">
-                        {msg.role === "user" ? "Anda (Boss)" : "WARU Business Assistant"}
-                      </span>
-                      {msg.timestamp && (
-                        <span className="text-[10px] text-slate-400 font-normal">
-                          {formatMessageTime(msg.timestamp)}
-                        </span>
-                      )}
-                    </div>
-
-                    <div
-                      className={`rounded-2xl px-4.5 py-3.5 text-xs sm:text-sm shadow-xs break-words ${
-                        msg.role === "user"
-                          ? "bg-[#293855] text-white rounded-br-xs font-medium"
-                          : "bg-slate-50 text-[#293855] rounded-bl-xs border border-slate-200"
-                      }`}
-                    >
-                      {msg.role === "user" ? (
-                        <p className="whitespace-pre-wrap leading-relaxed">{msg.content}</p>
-                      ) : (
-                        <div className="space-y-0.5">{formatMessageContent(msg.content)}</div>
-                      )}
-                    </div>
-
-                    {/* Display Structured Business Insights if present */}
-                    {msg.role === "assistant" && msg.insights && Array.isArray(msg.insights) && msg.insights.length > 0 && (
-                      <div className="mt-3 space-y-2.5">
-                        <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-500 uppercase tracking-wider px-1">
-                          <svg className="h-3.5 w-3.5 text-[#4265D6]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                          </svg>
-                          <span>Business Intelligence & Rekomendasi</span>
-                        </div>
-
-                        <div className="space-y-2.5">
-                          {msg.insights.map((insight, idx) => (
-                            <div
-                              key={idx}
-                              className="bg-white border border-slate-200 border-l-4 border-l-[#4265D6] rounded-xl p-4 shadow-xs"
-                            >
-                              <div className="flex flex-wrap items-center gap-2 mb-2">
-                                <span className="bg-blue-50 text-[#4265D6] border border-blue-100 text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded">
-                                  {insight.category || "OPERASIONAL"}
-                                </span>
-                                <span className="text-xs sm:text-sm font-extrabold text-[#293855] leading-snug">
-                                  {insight.summary}
-                                </span>
-                              </div>
-
-                              {insight.recommendations && Array.isArray(insight.recommendations) && insight.recommendations.length > 0 && (
-                                <div className="mt-3 pt-3 border-t border-slate-100">
-                                  <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wide block mb-2">
-                                    Rekomendasi Tindakan Operasional:
-                                  </span>
-                                  <ul className="space-y-1.5">
-                                    {insight.recommendations.map((rec, recIdx) => (
-                                      <li
-                                        key={recIdx}
-                                        className="text-xs text-slate-700 leading-relaxed flex items-start gap-2 bg-slate-50 border border-slate-200/80 rounded-lg p-2.5"
-                                      >
-                                        <svg
-                                          className="h-4 w-4 text-[#4265D6] shrink-0 mt-0.5"
-                                          fill="none"
-                                          viewBox="0 0 24 24"
-                                          stroke="currentColor"
-                                        >
-                                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                                        </svg>
-                                        <span className="flex-1 font-semibold text-[#293855]">{rec}</span>
-                                      </li>
-                                    ))}
-                                  </ul>
-                                </div>
-                              )}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </article>
+                <AssistantMessageItem key={index} msg={msg} />
               ))}
             </div>
           )}
@@ -516,8 +530,8 @@ export default function BusinessAssistantPage() {
           {/* Processing / Loading State */}
           {loading && (
             <div className="flex justify-start pt-2" role="status" aria-live="polite">
-              <div className="bg-slate-50 text-[#293855] rounded-2xl rounded-bl-xs px-4 py-3 border border-slate-200 shadow-xs flex items-center gap-3">
-                <div className="h-4 w-4 animate-spin rounded-full border-2 border-[#4265D6] border-t-transparent shrink-0 motion-reduce:animate-none" />
+              <div className="bg-slate-50 text-navy rounded-2xl rounded-bl-xs px-4 py-3 border border-slate-200 shadow-xs flex items-center gap-3">
+                <div className="h-4 w-4 animate-spin rounded-full border-2 border-blue-primary border-t-transparent shrink-0 motion-reduce:animate-none" />
                 <span className="text-xs text-slate-600 font-semibold">
                   WARU Assistant sedang menganalisis data operasional...
                 </span>
@@ -540,7 +554,9 @@ export default function BusinessAssistantPage() {
                 ? "Mohon tunggu, asisten sedang menganalisis..."
                 : "Ketik pertanyaan operasional bisnis di sini..."
             }
-            className="flex-1 rounded-xl border border-slate-300 bg-white px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm text-[#293855] font-medium focus-visible:outline-2 focus-visible:outline-[#4265D6] disabled:bg-slate-100 disabled:text-slate-400 transition min-w-0"
+            className={`flex-1 rounded-xl border border-slate-300 px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-medium focus-visible:outline-2 focus-visible:outline-blue-primary transition min-w-0 ${
+              loading ? "bg-slate-100 text-slate-400" : "bg-white text-navy"
+            }`}
             required
             aria-label="Pesan untuk Business Assistant"
           />
@@ -548,7 +564,7 @@ export default function BusinessAssistantPage() {
             type="submit"
             variant="primary"
             disabled={loading || !inputText.trim()}
-            className="shrink-0 min-h-[38px] sm:min-h-[44px]"
+            className="shrink-0 min-h-9.5 sm:min-h-11"
             aria-label="Kirim pesan"
           >
             <span>Kirim</span>
@@ -561,8 +577,3 @@ export default function BusinessAssistantPage() {
     </div>
   );
 }
-
-
-
-
-
