@@ -36,10 +36,15 @@ export default function Navbar() {
   }
 
   return (
-    <header className="border-b border-slate-200 bg-white/95 backdrop-blur-xs sticky top-0 z-40">
-      <nav className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 sm:px-6 py-3 sm:py-3.5">
-        <Link href="/" className="text-xl font-black tracking-tight text-[#293855] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6] rounded-lg px-2 py-1 hover:text-[#4265D6] transition-colors">
-          WARU
+    <header className="border-b border-slate-200/80 bg-white/95 backdrop-blur-xs sticky top-0 z-40 h-16 flex items-center">
+      <nav className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <Link href="/" className="flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6] rounded-lg px-2 py-1 transition-colors group">
+          <span className="text-xl font-black tracking-tight text-[#293855] group-hover:text-[#4265D6] transition-colors">
+            WARU
+          </span>
+          <span className="hidden sm:inline-flex items-center rounded-md bg-blue-50 px-2 py-0.5 text-[10px] font-bold text-[#4265D6] border border-blue-100 uppercase tracking-wider">
+            POS
+          </span>
         </Link>
 
         {/* Desktop Navigation Links */}

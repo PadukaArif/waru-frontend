@@ -57,4 +57,85 @@ body {
   outline-offset: 2px;
 }
 
+/* Typography Hierarchy & Page Layout Utilities */
+.page-container {
+  width: 100%;
+  max-width: 80rem; /* 1280px max-w-7xl */
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .page-container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .page-container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+.h1-title {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: #293855;
+}
+
+@media (min-width: 640px) {
+  .h1-title {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+  }
+}
+
+.h2-title {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #293855;
+}
+
+@media (min-width: 640px) {
+  .h2-title {
+    font-size: 1.75rem;
+    line-height: 2.25rem;
+  }
+}
+
+.h3-title {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+  color: #293855;
+}
+
+.text-body {
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  color: #293855;
+}
+
+@media (min-width: 640px) {
+  .text-body {
+    font-size: 1rem;
+    line-height: 1.75rem;
+  }
+}
+
+.text-subtle {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #4b5d80;
+}
+
+
 

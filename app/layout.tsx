@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import AuthGuard from "@/components/AuthGuard";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -14,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-    title: "WARU",
-    description: "WARU - Warung Analytics Resource Utility",
+    title: "WARU — Warung Analytics Resource Utility",
+    description: "WARU - Multi-Outlet & POS Management System",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -26,7 +28,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         >
             <body className="min-h-full flex flex-col bg-[#f8fafc] text-[#293855]">
                 <Navbar />
-                {children}
+                <AuthGuard>
+                    <main className="flex-1 w-full">
+                        {children}
+                    </main>
+                </AuthGuard>
+                <Footer />
             </body>
         </html>
     );
