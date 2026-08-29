@@ -38,11 +38,11 @@ export default function Navbar() {
   return (
     <header className="border-b border-slate-200/80 bg-white/95 backdrop-blur-xs sticky top-0 z-40 h-16 flex items-center">
       <nav className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6] rounded-lg px-2 py-1 transition-colors group">
-          <span className="text-xl font-black tracking-tight text-[#293855] group-hover:text-[#4265D6] transition-colors">
+        <Link href="/" className="flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-primary rounded-lg px-2 py-1 transition-colors group">
+          <span className="text-xl font-black tracking-tight text-navy group-hover:text-blue-primary transition-colors">
             WARU
           </span>
-          <span className="hidden sm:inline-flex items-center rounded-md bg-blue-50 px-2 py-0.5 text-[10px] font-bold text-[#4265D6] border border-blue-100 uppercase tracking-wider">
+          <span className="hidden sm:inline-flex items-center rounded-md bg-blue-50 px-2 py-0.5 text-[10px] font-bold text-blue-primary border border-blue-100 uppercase tracking-wider">
             POS
           </span>
         </Link>
@@ -51,8 +51,8 @@ export default function Navbar() {
         <div className="hidden md:flex items-center gap-1.5">
           <Link
             href="/"
-            className={`text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6] rounded-lg px-3 py-1.5 ${
-              isActive("/") ? "text-[#4265D6] bg-blue-50/80 font-bold" : "text-slate-600 hover:text-[#293855] hover:bg-slate-100/70 font-medium"
+            className={`text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-primary rounded-lg px-3 py-1.5 ${
+              isActive("/") ? "text-blue-primary bg-blue-50/80 font-bold" : "text-slate-600 hover:text-navy hover:bg-slate-100/70 font-medium"
             }`}
           >
             Home
@@ -60,8 +60,8 @@ export default function Navbar() {
 
           <Link
             href="/menu"
-            className={`text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6] rounded-lg px-3 py-1.5 ${
-              isActive("/menu") ? "text-[#4265D6] bg-blue-50/80 font-bold" : "text-slate-600 hover:text-[#293855] hover:bg-slate-100/70 font-medium"
+            className={`text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-primary rounded-lg px-3 py-1.5 ${
+              isActive("/menu") ? "text-blue-primary bg-blue-50/80 font-bold" : "text-slate-600 hover:text-navy hover:bg-slate-100/70 font-medium"
             }`}
           >
             Menu
@@ -71,8 +71,8 @@ export default function Navbar() {
             <>
               <Link
                 href="/order"
-                className={`text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6] rounded-lg px-3 py-1.5 ${
-                  isActive("/order") ? "text-[#4265D6] bg-blue-50/80 font-bold" : "text-slate-600 hover:text-[#293855] hover:bg-slate-100/70 font-medium"
+                className={`text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-primary rounded-lg px-3 py-1.5 ${
+                  isActive("/order") ? "text-blue-primary bg-blue-50/80 font-bold" : "text-slate-600 hover:text-navy hover:bg-slate-100/70 font-medium"
                 }`}
               >
                 Orders
@@ -80,27 +80,38 @@ export default function Navbar() {
 
               <Link
                 href="/payment"
-                className={`text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6] rounded-lg px-3 py-1.5 ${
-                  isActive("/payment") ? "text-[#4265D6] bg-blue-50/80 font-bold" : "text-slate-600 hover:text-[#293855] hover:bg-slate-100/70 font-medium"
+                className={`text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-primary rounded-lg px-3 py-1.5 ${
+                  isActive("/payment") ? "text-blue-primary bg-blue-50/80 font-bold" : "text-slate-600 hover:text-navy hover:bg-slate-100/70 font-medium"
                 }`}
               >
                 Riwayat Pembayaran
               </Link>
 
+              {(userRole === "kitchen" || userRole === "boss") && (
+                <Link
+                  href="/kitchen"
+                  className={`text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-primary rounded-lg px-3 py-1.5 ${
+                    isActive("/kitchen") ? "text-blue-primary bg-blue-50/80 font-bold" : "text-slate-600 hover:text-navy hover:bg-slate-100/70 font-medium"
+                  }`}
+                >
+                  Dapur
+                </Link>
+              )}
+
               {userRole === "boss" && (
                 <>
                   <Link
                     href="/admin"
-                    className={`text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6] rounded-lg px-3 py-1.5 ${
-                      isActive("/admin") && !isActive("/admin/assistant") ? "text-[#4265D6] bg-blue-50/80 font-bold" : "text-slate-600 hover:text-[#293855] hover:bg-slate-100/70 font-medium"
+                    className={`text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-primary rounded-lg px-3 py-1.5 ${
+                      isActive("/admin") && !isActive("/admin/assistant") ? "text-blue-primary bg-blue-50/80 font-bold" : "text-slate-600 hover:text-navy hover:bg-slate-100/70 font-medium"
                     }`}
                   >
                     Admin
                   </Link>
                   <Link
                     href="/admin/assistant"
-                    className={`text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6] rounded-lg px-3 py-1.5 ${
-                      isActive("/admin/assistant") ? "text-[#4265D6] bg-blue-50/80 font-bold" : "text-slate-600 hover:text-[#293855] hover:bg-slate-100/70 font-medium"
+                    className={`text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-primary rounded-lg px-3 py-1.5 ${
+                      isActive("/admin/assistant") ? "text-blue-primary bg-blue-50/80 font-bold" : "text-slate-600 hover:text-navy hover:bg-slate-100/70 font-medium"
                     }`}
                   >
                     AI Assistant
@@ -120,8 +131,8 @@ export default function Navbar() {
             <>
               <Link
                 href="/login"
-                className={`text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6] rounded-lg px-3 py-1.5 ${
-                  isActive("/login") ? "text-[#4265D6] bg-blue-50/80 font-bold" : "text-slate-600 hover:text-[#293855] hover:bg-slate-100/70 font-medium"
+                className={`text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-primary rounded-lg px-3 py-1.5 ${
+                  isActive("/login") ? "text-blue-primary bg-blue-50/80 font-bold" : "text-slate-600 hover:text-navy hover:bg-slate-100/70 font-medium"
                 }`}
               >
                 Login
@@ -129,7 +140,7 @@ export default function Navbar() {
 
               <Link
                 href="/register"
-                className="ml-2 rounded-lg bg-[#4265D6] px-4 py-2 text-sm font-semibold text-white hover:bg-[#3352bc] active:bg-[#2844a4] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#4265D6] transition shadow-xs"
+                className="ml-2 rounded-lg bg-blue-primary px-4 py-2 text-sm font-semibold text-white hover:bg-blue-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-primary transition shadow-xs"
               >
                 Register
               </Link>
@@ -141,7 +152,7 @@ export default function Navbar() {
         <button
           type="button"
           onClick={() => setMobileMenuOpen((prev) => !prev)}
-          className="md:hidden p-2 rounded-lg text-[#293855] hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6] transition cursor-pointer"
+          className="md:hidden p-2 rounded-lg text-navy hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-primary transition cursor-pointer"
           aria-expanded={mobileMenuOpen}
           aria-label={mobileMenuOpen ? "Tutup menu navigasi" : "Buka menu navigasi"}
         >
@@ -163,8 +174,8 @@ export default function Navbar() {
           <Link
             href="/"
             onClick={() => setMobileMenuOpen(false)}
-            className={`block rounded-lg px-3 py-2.5 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6] ${
-              isActive("/") ? "bg-blue-50/80 text-[#4265D6]" : "text-[#293855] hover:bg-slate-100/70"
+            className={`block rounded-lg px-3 py-2.5 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-primary ${
+              isActive("/") ? "bg-blue-50/80 text-blue-primary" : "text-navy hover:bg-slate-100/70"
             }`}
           >
             Home
@@ -173,8 +184,8 @@ export default function Navbar() {
           <Link
             href="/menu"
             onClick={() => setMobileMenuOpen(false)}
-            className={`block rounded-lg px-3 py-2.5 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6] ${
-              isActive("/menu") ? "bg-blue-50/80 text-[#4265D6]" : "text-[#293855] hover:bg-slate-100/70"
+            className={`block rounded-lg px-3 py-2.5 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-primary ${
+              isActive("/menu") ? "bg-blue-50/80 text-blue-primary" : "text-navy hover:bg-slate-100/70"
             }`}
           >
             Menu
@@ -185,8 +196,8 @@ export default function Navbar() {
               <Link
                 href="/order"
                 onClick={() => setMobileMenuOpen(false)}
-                className={`block rounded-lg px-3 py-2.5 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6] ${
-                  isActive("/order") ? "bg-blue-50/80 text-[#4265D6]" : "text-[#293855] hover:bg-slate-100/70"
+                className={`block rounded-lg px-3 py-2.5 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-primary ${
+                  isActive("/order") ? "bg-blue-50/80 text-blue-primary" : "text-navy hover:bg-slate-100/70"
                 }`}
               >
                 Orders
@@ -195,20 +206,32 @@ export default function Navbar() {
               <Link
                 href="/payment"
                 onClick={() => setMobileMenuOpen(false)}
-                className={`block rounded-lg px-3 py-2.5 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6] ${
-                  isActive("/payment") ? "bg-blue-50/80 text-[#4265D6]" : "text-[#293855] hover:bg-slate-100/70"
+                className={`block rounded-lg px-3 py-2.5 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-primary ${
+                  isActive("/payment") ? "bg-blue-50/80 text-blue-primary" : "text-navy hover:bg-slate-100/70"
                 }`}
               >
                 Riwayat Pembayaran
               </Link>
+
+              {(userRole === "kitchen" || userRole === "boss") && (
+                <Link
+                  href="/kitchen"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`block rounded-lg px-3 py-2.5 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-primary ${
+                    isActive("/kitchen") ? "bg-blue-50/80 text-blue-primary" : "text-navy hover:bg-slate-100/70"
+                  }`}
+                >
+                  Dapur
+                </Link>
+              )}
 
               {userRole === "boss" && (
                 <>
                   <Link
                     href="/admin"
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`block rounded-lg px-3 py-2.5 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6] ${
-                      isActive("/admin") && !isActive("/admin/assistant") ? "bg-blue-50/80 text-[#4265D6]" : "text-[#293855] hover:bg-slate-100/70"
+                    className={`block rounded-lg px-3 py-2.5 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-primary ${
+                      isActive("/admin") && !isActive("/admin/assistant") ? "bg-blue-50/80 text-blue-primary" : "text-navy hover:bg-slate-100/70"
                     }`}
                   >
                     Admin
@@ -216,8 +239,8 @@ export default function Navbar() {
                   <Link
                     href="/admin/assistant"
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`block rounded-lg px-3 py-2.5 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6] ${
-                      isActive("/admin/assistant") ? "bg-blue-50/80 text-[#4265D6]" : "text-[#293855] hover:bg-slate-100/70"
+                    className={`block rounded-lg px-3 py-2.5 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-primary ${
+                      isActive("/admin/assistant") ? "bg-blue-50/80 text-blue-primary" : "text-navy hover:bg-slate-100/70"
                     }`}
                   >
                     AI Assistant
@@ -240,8 +263,8 @@ export default function Navbar() {
               <Link
                 href="/login"
                 onClick={() => setMobileMenuOpen(false)}
-                className={`block rounded-lg px-3 py-2.5 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6] ${
-                  isActive("/login") ? "bg-blue-50/80 text-[#4265D6]" : "text-[#293855] hover:bg-slate-100/70"
+                className={`block rounded-lg px-3 py-2.5 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-primary ${
+                  isActive("/login") ? "bg-blue-50/80 text-blue-primary" : "text-navy hover:bg-slate-100/70"
                 }`}
               >
                 Login
@@ -250,7 +273,7 @@ export default function Navbar() {
               <Link
                 href="/register"
                 onClick={() => setMobileMenuOpen(false)}
-                className="block rounded-lg bg-[#4265D6] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#3352bc] text-center transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#4265D6] shadow-xs"
+                className="block rounded-lg bg-blue-primary px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-hover text-center transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-primary shadow-xs"
               >
                 Register
               </Link>
@@ -260,4 +283,4 @@ export default function Navbar() {
       )}
     </header>
   );
-}
+}

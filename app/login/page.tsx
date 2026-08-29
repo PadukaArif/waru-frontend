@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { login, getJwtPayload } from "@/services/auth";
@@ -15,12 +15,22 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const redirectUserByRole = useCallback(
+    (role?: string) => {
+      if (role === "kitchen") router.replace("/kitchen");
+      else if (role === "cashier") router.replace("/order");
+      else if (role === "boss") router.replace("/admin");
+      else router.replace("/menu");
+    },
+    [router]
+  );
+
   useEffect(() => {
     const payload = getJwtPayload();
     if (payload) {
-      router.replace("/menu");
+      redirectUserByRole(payload.role);
     }
-  }, [router]);
+  }, [redirectUserByRole]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -34,7 +44,8 @@ export default function LoginPage() {
         password,
       });
 
-      router.push("/menu");
+      const payload = getJwtPayload();
+      redirectUserByRole(payload?.role);
     } catch (error) {
       setError(
         error instanceof Error
@@ -48,12 +59,12 @@ export default function LoginPage() {
 
   return (
     <section className="page-container flex min-h-[calc(100vh-10rem)] items-center justify-center py-10">
-      <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs text-[#293855]">
+      <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs text-navy">
         <div className="mb-6 sm:mb-8 text-center sm:text-left">
-          <span className="inline-flex items-center rounded-md bg-blue-50 border border-blue-100 px-2.5 py-0.5 text-xs font-bold text-[#4265D6] uppercase tracking-wider mb-3">
+          <span className="inline-flex items-center rounded-md bg-blue-50 border border-blue-100 px-2.5 py-0.5 text-xs font-bold text-blue-primary uppercase tracking-wider mb-3">
             WARU POS
           </span>
-          <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-[#293855]">
+          <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-navy">
             Masuk ke Akun
           </h1>
           <p className="mt-1.5 text-xs sm:text-sm text-slate-600">
@@ -110,7 +121,7 @@ export default function LoginPage() {
             Belum punya akun?{" "}
             <Link
               href="/register"
-              className="font-bold text-[#4265D6] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4265D6] rounded px-1"
+              className="font-bold text-blue-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-primary rounded px-1"
             >
               Daftar akun baru
             </Link>

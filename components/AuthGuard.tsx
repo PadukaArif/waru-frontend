@@ -22,7 +22,11 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
 
     if (isPublicRoute) {
       if (payload) {
-        router.replace("/menu");
+        const role = payload.role;
+        if (role === "kitchen") router.replace("/kitchen");
+        else if (role === "cashier") router.replace("/order");
+        else if (role === "boss") router.replace("/admin");
+        else router.replace("/menu");
         return;
       }
       setAuthorized(true);
@@ -49,6 +53,17 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
       }
     }
 
+    // 4. Kitchen routes require "kitchen" role
+    if (pathname === "/kitchen" || pathname.startsWith("/kitchen/")) {
+      const role = getUserRole();
+      if (role !== "kitchen") {
+        setAuthorized(false);
+        setChecking(false);
+        router.replace("/menu");
+        return;
+      }
+    }
+
     setAuthorized(true);
     setChecking(false);
   }, [pathname, router]);
@@ -65,8 +80,8 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
     return (
       <div className="flex flex-1 min-h-[60vh] items-center justify-center">
         <div className="text-center space-y-3">
-          <div className="mx-auto h-8 w-8 animate-spin rounded-full border-4 border-[#4265D6] border-t-transparent"></div>
-          <p className="text-xs sm:text-sm font-semibold text-[#293855]">
+          <div className="mx-auto h-8 w-8 animate-spin rounded-full border-4 border-blue-primary border-t-transparent"></div>
+          <p className="text-xs sm:text-sm font-semibold text-navy">
             Memverifikasi akses WARU...
           </p>
         </div>
