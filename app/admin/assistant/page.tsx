@@ -235,8 +235,8 @@ export default function BusinessAssistantPage() {
   }
 
   return (
-    <main className="flex-1 flex flex-col bg-gray-50/50 min-h-[calc(100vh-65px)]">
-      <div className="mx-auto w-full max-w-5xl px-3 sm:px-6 py-4 sm:py-6 flex-1 flex flex-col">
+    <main className="flex-1 flex flex-col bg-gray-50/30 min-h-[calc(100vh-65px)]">
+      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 py-6 flex-1 flex flex-col">
         {/* Header */}
         <header className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-200 pb-4 sm:pb-5 mb-4 sm:mb-6 gap-3 sm:gap-4">
           <div>

@@ -194,36 +194,46 @@ export default function AdminMenuPage() {
   }
 
   return (
-    <main className="min-h-screen px-6 py-10">
-      <div className="mx-auto max-w-6xl">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold">
+    <main className="flex-1 bg-gray-50/30">
+      <section className="mx-auto w-full max-w-7xl px-4 sm:px-6 py-8 sm:py-12">
+        <div className="mb-6 sm:mb-8 border-b border-gray-200 pb-6">
+          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-gray-900">
             Admin Menu
           </h1>
 
-          <p className="mt-2 text-gray-600">
-            Kelola menu makanan WARU.
+          <p className="mt-1.5 text-xs sm:text-sm text-gray-600">
+            Kelola item makanan dan minuman WARU.
           </p>
         </div>
 
         {error && (
-          <div className="mb-6 rounded-lg border border-red-300 bg-red-50 p-4 text-sm text-red-600">
-            {error}
+          <div
+            role="alert"
+            className="mb-6 rounded-xl border border-red-200 bg-red-50 p-3.5 sm:p-4 text-xs sm:text-sm text-red-800 flex items-center justify-between shadow-2xs"
+          >
+            <span>{error}</span>
+            <button
+              type="button"
+              onClick={() => setError("")}
+              className="text-red-700 hover:text-red-950 font-semibold text-xs ml-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 rounded px-1.5 py-0.5"
+            >
+              Tutup
+            </button>
           </div>
         )}
 
-        <section className="mb-10 rounded-xl border p-6">
-          <h2 className="mb-6 text-xl font-semibold">
+        <section className="mb-8 sm:mb-10 rounded-2xl border border-gray-200 p-4 sm:p-6 bg-white shadow-2xs">
+          <h2 className="mb-4 sm:mb-6 text-lg sm:text-xl font-semibold text-gray-900">
             {editingId ? "Edit Menu" : "Tambah Menu"}
           </h2>
 
           <form
             onSubmit={handleSubmit}
-            className="grid gap-5 md:grid-cols-2"
+            className="grid gap-4 sm:gap-5 md:grid-cols-2"
           >
             <div>
-              <label className="mb-2 block text-sm font-medium">
-                Nama
+              <label className="mb-1.5 block text-xs sm:text-sm font-medium text-gray-700">
+                Nama Menu
               </label>
 
               <input
@@ -232,14 +242,14 @@ export default function AdminMenuPage() {
                   handleChange("name", event.target.value)
                 }
                 required
-                className="w-full rounded-lg border px-4 py-3"
+                className="w-full rounded-xl border border-gray-300 bg-white px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:border-transparent transition"
                 placeholder="Nasi Goreng Waru"
               />
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-medium">
-                Harga
+              <label className="mb-1.5 block text-xs sm:text-sm font-medium text-gray-700">
+                Harga (Rp)
               </label>
 
               <input
@@ -250,13 +260,13 @@ export default function AdminMenuPage() {
                   handleChange("price", event.target.value)
                 }
                 required
-                className="w-full rounded-lg border px-4 py-3"
+                className="w-full rounded-xl border border-gray-300 bg-white px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:border-transparent transition"
                 placeholder="25000"
               />
             </div>
 
             <div className="md:col-span-2">
-              <label className="mb-2 block text-sm font-medium">
+              <label className="mb-1.5 block text-xs sm:text-sm font-medium text-gray-700">
                 Deskripsi
               </label>
 
@@ -269,14 +279,14 @@ export default function AdminMenuPage() {
                   )
                 }
                 required
-                rows={4}
-                className="w-full rounded-lg border px-4 py-3"
-                placeholder="Deskripsi menu..."
+                rows={3}
+                className="w-full rounded-xl border border-gray-300 bg-white px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:border-transparent transition"
+                placeholder="Deskripsi singkat menu..."
               />
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-medium">
+              <label className="mb-1.5 block text-xs sm:text-sm font-medium text-gray-700">
                 Kategori
               </label>
 
@@ -288,7 +298,7 @@ export default function AdminMenuPage() {
                     event.target.value as MenuCategory
                   )
                 }
-                className="w-full rounded-lg border px-4 py-3"
+                className="w-full rounded-xl border border-gray-300 bg-white px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:border-transparent transition"
               >
                 <option value="Heavy Food">
                   Heavy Food
@@ -300,13 +310,13 @@ export default function AdminMenuPage() {
             </div>
 
             <div className="md:col-span-2">
-              <label className="mb-2 block text-sm font-medium">
+              <label className="mb-1.5 block text-xs sm:text-sm font-medium text-gray-700">
                 Gambar Menu
               </label>
 
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                 {/* Preview Container */}
-                <div className="relative aspect-video w-full max-w-[200px] overflow-hidden rounded-lg border bg-gray-50 flex items-center justify-center">
+                <div className="relative aspect-video w-full max-w-[160px] sm:max-w-[200px] overflow-hidden rounded-xl border border-gray-200 bg-gray-50 flex items-center justify-center shrink-0">
                   {form.imageUrl ? (
                     <img
                       src={form.imageUrl}
@@ -319,10 +329,10 @@ export default function AdminMenuPage() {
                 </div>
 
                 <div className="flex-1 space-y-2">
-                  <div className="flex flex-wrap items-center gap-3">
+                  <div className="flex flex-wrap items-center gap-2.5">
                     <label
                       htmlFor="image-upload"
-                      className={`rounded-lg bg-black px-4 py-2.5 text-sm font-semibold text-white cursor-pointer hover:bg-gray-800 transition ${
+                      className={`rounded-xl bg-black px-4 py-2.5 text-xs sm:text-sm font-semibold text-white cursor-pointer hover:bg-gray-800 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-black min-h-[40px] inline-flex items-center justify-center ${
                         uploadingImage ? "opacity-50 cursor-not-allowed" : ""
                       }`}
                     >
@@ -341,13 +351,13 @@ export default function AdminMenuPage() {
                       <button
                         type="button"
                         onClick={() => handleChange("imageUrl", "")}
-                        className="rounded-lg border border-red-300 px-4 py-2.5 text-sm font-semibold text-red-600 hover:bg-red-50 transition"
+                        className="rounded-xl border border-red-300 px-3.5 py-2.5 text-xs sm:text-sm font-semibold text-red-600 hover:bg-red-50 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 min-h-[40px]"
                       >
                         Hapus Gambar
                       </button>
                     )}
                   </div>
-                  <p className="text-xs text-gray-500">
+                  <p className="text-[11px] sm:text-xs text-gray-500">
                     Mendukung format JPG, JPEG, PNG, WEBP
                   </p>
                   {uploadError && (
@@ -365,7 +375,7 @@ export default function AdminMenuPage() {
               />
             </div>
 
-            <label className="flex items-center gap-3">
+            <label className="flex items-center gap-3 min-h-[44px] cursor-pointer text-xs sm:text-sm font-medium text-gray-800 select-none">
               <input
                 type="checkbox"
                 checked={form.isAvailable}
@@ -375,14 +385,13 @@ export default function AdminMenuPage() {
                     event.target.checked
                   )
                 }
+                className="h-4 w-4 rounded border-gray-300 text-black focus:ring-black"
               />
 
-              <span className="text-sm font-medium">
-                Tersedia
-              </span>
+              <span>Tersedia</span>
             </label>
 
-            <label className="flex items-center gap-3">
+            <label className="flex items-center gap-3 min-h-[44px] cursor-pointer text-xs sm:text-sm font-medium text-gray-800 select-none">
               <input
                 type="checkbox"
                 checked={form.isRecommended}
@@ -392,18 +401,17 @@ export default function AdminMenuPage() {
                     event.target.checked
                   )
                 }
+                className="h-4 w-4 rounded border-gray-300 text-black focus:ring-black"
               />
 
-              <span className="text-sm font-medium">
-                Recommended
-              </span>
+              <span>Recommended</span>
             </label>
 
-            <div className="flex gap-3 md:col-span-2">
+            <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3 md:col-span-2 pt-2">
               <button
                 type="submit"
                 disabled={saving || uploadingImage}
-                className="rounded-lg bg-black px-5 py-3 font-medium text-white disabled:opacity-50"
+                className="rounded-xl bg-black px-5 py-3 text-xs sm:text-sm font-semibold text-white hover:bg-gray-800 disabled:opacity-50 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-black min-h-[44px] flex items-center justify-center"
               >
                 {saving
                   ? "Menyimpan..."
@@ -416,7 +424,7 @@ export default function AdminMenuPage() {
                 <button
                   type="button"
                   onClick={resetForm}
-                  className="rounded-lg border px-5 py-3 font-medium"
+                  className="rounded-xl border border-gray-300 px-5 py-3 text-xs sm:text-sm font-semibold text-gray-700 hover:bg-gray-50 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black min-h-[44px] flex items-center justify-center"
                 >
                   Batal
                 </button>
@@ -426,26 +434,26 @@ export default function AdminMenuPage() {
         </section>
 
         <section>
-          <h2 className="mb-5 text-xl font-semibold">
+          <h2 className="mb-4 sm:mb-5 text-lg sm:text-xl font-semibold text-gray-900">
             Daftar Menu
           </h2>
 
           {loading ? (
-            <p className="text-gray-500">
+            <p className="text-xs sm:text-sm text-gray-500">
               Memuat menu...
             </p>
           ) : menus.length === 0 ? (
-            <div className="rounded-xl border p-8 text-center text-gray-500">
+            <div className="rounded-2xl border border-gray-200 p-8 text-center text-xs sm:text-sm text-gray-500 bg-white shadow-2xs">
               Belum ada menu.
             </div>
           ) : (
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
               {menus.map((menu) => (
                 <article
                   key={menu._id}
-                  className="overflow-hidden rounded-xl border"
+                  className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-2xs flex flex-col justify-between"
                 >
-                  <div className="aspect-video overflow-hidden bg-gray-100">
+                  <div className="aspect-video overflow-hidden bg-gray-100 relative">
                     <img
                       src={menu.imageUrl}
                       alt={menu.name}
@@ -453,25 +461,26 @@ export default function AdminMenuPage() {
                     />
                   </div>
 
-                  <div className="p-5">
-                    <h3 className="text-lg font-semibold">
-                      {menu.name}
-                    </h3>
+                  <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between">
+                    <div>
+                      <h3 className="text-base sm:text-lg font-semibold text-gray-900">
+                        {menu.name}
+                      </h3>
 
-                    <p className="mt-2 line-clamp-2 text-sm text-gray-600">
-                      {menu.description}
-                    </p>
+                      <p className="mt-1.5 line-clamp-2 text-xs sm:text-sm text-gray-600">
+                        {menu.description}
+                      </p>
 
-                    <p className="mt-3 font-semibold">
-                      Rp{" "}
-                      {menu.price.toLocaleString("id-ID")}
-                    </p>
+                      <p className="mt-2.5 font-semibold text-sm sm:text-base text-gray-900">
+                        Rp {menu.price.toLocaleString("id-ID")}
+                      </p>
+                    </div>
 
-                    <div className="mt-5 flex gap-2">
+                    <div className="mt-4 pt-3 border-t border-gray-100 flex gap-2">
                       <button
                         type="button"
                         onClick={() => startEdit(menu)}
-                        className="flex-1 rounded-lg border px-3 py-2 text-sm font-medium"
+                        className="flex-1 rounded-xl border border-gray-300 px-3 py-2 text-xs sm:text-sm font-semibold text-gray-700 hover:bg-gray-50 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black min-h-[38px]"
                       >
                         Edit
                       </button>
@@ -481,7 +490,7 @@ export default function AdminMenuPage() {
                         onClick={() =>
                           handleDelete(menu._id)
                         }
-                        className="flex-1 rounded-lg border border-red-300 px-3 py-2 text-sm font-medium text-red-600"
+                        className="flex-1 rounded-xl border border-red-200 bg-red-50/50 px-3 py-2 text-xs sm:text-sm font-semibold text-red-600 hover:bg-red-100 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 min-h-[38px]"
                       >
                         Hapus
                       </button>
@@ -492,7 +501,7 @@ export default function AdminMenuPage() {
             </div>
           )}
         </section>
-      </div>
+      </section>
     </main>
   );
-}
+}

@@ -91,16 +91,16 @@ export default function PaymentHistoryPage() {
 
   if (loading) {
     return (
-      <main className="flex-1">
-        <section className="mx-auto w-full max-w-6xl px-6 py-12">
-          <div className="mb-8">
-            <div className="h-9 w-48 animate-pulse rounded bg-gray-200" />
-            <div className="mt-3 h-5 w-64 animate-pulse rounded bg-gray-200" />
+      <main className="flex-1 bg-gray-50/30">
+        <section className="mx-auto w-full max-w-7xl px-4 sm:px-6 py-8 sm:py-12">
+          <div className="mb-8 border-b border-gray-200 pb-6">
+            <div className="h-8 w-48 animate-pulse rounded-lg bg-gray-200" />
+            <div className="mt-2 h-4 w-60 animate-pulse rounded-lg bg-gray-200" />
           </div>
 
           <div className="space-y-4">
-            {Array.from({ length: 5 }).map((_, index) => (
-              <div key={index} className="rounded-xl border p-5">
+            {Array.from({ length: 4 }).map((_, index) => (
+              <div key={index} className="rounded-2xl border border-gray-200 bg-white p-5 shadow-2xs">
                 <div className="flex flex-col gap-4 sm:flex-row sm:justify-between">
                   <div className="space-y-3">
                     <div className="h-6 w-40 animate-pulse rounded bg-gray-200" />
@@ -121,14 +121,14 @@ export default function PaymentHistoryPage() {
 
   if (error) {
     return (
-      <main className="flex min-h-[60vh] items-center justify-center px-6">
-        <div className="w-full max-w-md text-center">
-          <h1 className="text-2xl font-bold">Gagal memuat pembayaran</h1>
-          <p className="mt-3 text-gray-600">{error}</p>
+      <main className="flex-1 flex items-center justify-center bg-gray-50/30 min-h-[60vh] px-4">
+        <div className="w-full max-w-md rounded-2xl border border-gray-200 bg-white p-8 text-center shadow-2xs">
+          <h1 className="text-xl font-bold text-gray-900">Gagal memuat pembayaran</h1>
+          <p className="mt-2 text-xs sm:text-sm text-gray-600">{error}</p>
           <button
             type="button"
             onClick={() => loadPayments(page)}
-            className="mt-6 rounded-lg bg-black px-5 py-3 font-medium text-white hover:bg-gray-800"
+            className="mt-6 inline-flex items-center justify-center rounded-xl bg-black px-5 py-3 text-xs sm:text-sm font-semibold text-white hover:bg-gray-800 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black min-h-[44px]"
           >
             Coba Lagi
           </button>
@@ -138,17 +138,17 @@ export default function PaymentHistoryPage() {
   }
 
   return (
-    <main className="flex-1">
-      <section className="mx-auto w-full max-w-6xl px-6 py-12">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold">Riwayat Pembayaran</h1>
-          <p className="mt-2 text-gray-600">Daftar transaksi pembayaran Waru.</p>
+    <main className="flex-1 bg-gray-50/30">
+      <section className="mx-auto w-full max-w-7xl px-4 sm:px-6 py-8 sm:py-12">
+        <div className="mb-8 border-b border-gray-200 pb-6">
+          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-gray-900">Riwayat Pembayaran</h1>
+          <p className="mt-1.5 text-xs sm:text-sm text-gray-600">Daftar transaksi pembayaran WARU.</p>
         </div>
 
         {payments.length === 0 ? (
-          <div className="rounded-xl border p-10 text-center">
-            <h2 className="text-lg font-semibold">Belum ada pembayaran</h2>
-            <p className="mt-2 text-sm text-gray-500">
+          <div className="rounded-2xl border border-gray-200 bg-white p-8 sm:p-12 text-center shadow-2xs">
+            <h2 className="text-base sm:text-lg font-bold text-gray-900">Belum ada pembayaran</h2>
+            <p className="mt-1.5 text-xs sm:text-sm text-gray-500">
               Transaksi pembayaran yang selesai akan muncul di sini.
             </p>
           </div>
@@ -159,18 +159,18 @@ export default function PaymentHistoryPage() {
                 <Link
                   key={payment._id}
                   href={`/payment/${payment._id}`}
-                  className="block rounded-xl border p-5 transition hover:shadow-md hover:bg-gray-50/50"
+                  className="block rounded-2xl border border-gray-200 bg-white p-5 transition hover:border-gray-300 hover:shadow-2xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black"
                 >
                   <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                      <div className="flex flex-wrap items-center gap-3">
-                        <h2 className="text-lg font-semibold">
+                      <div className="flex flex-wrap items-center gap-2.5">
+                        <h2 className="text-base sm:text-lg font-bold text-gray-900">
                           Meja {payment.tableNumber}
                         </h2>
-                        <span className={`rounded-full border px-2.5 py-0.5 text-xs font-medium ${statusBadgeClass(payment.status)}`}>
+                        <span className={`rounded-full border px-2.5 py-0.5 text-xs font-semibold ${statusBadgeClass(payment.status)}`}>
                           {statusLabel(payment.status)}
                         </span>
-                        <span className="rounded-md bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600 uppercase border border-gray-200">
+                        <span className="rounded-md bg-gray-100 px-2 py-0.5 text-[11px] font-semibold text-gray-600 uppercase border border-gray-200">
                           {methodLabel(payment.method)}
                         </span>
                       </div>
@@ -183,11 +183,11 @@ export default function PaymentHistoryPage() {
                     </div>
 
                     <div className="sm:text-right">
-                      <p className="text-sm text-gray-500">Total Tagihan</p>
-                      <p className="font-semibold text-lg text-gray-900">
+                      <p className="text-xs text-gray-500 font-medium">Total Tagihan</p>
+                      <p className="font-bold text-base sm:text-lg text-gray-900">
                         {formatRupiah(payment.totalAmount)}
                       </p>
-                      <p className="mt-1 text-xs text-gray-500">
+                      <p className="mt-0.5 text-xs text-gray-500 font-medium">
                         Bayar: {formatRupiah(payment.paidAmount)}
                       </p>
                     </div>
@@ -196,17 +196,17 @@ export default function PaymentHistoryPage() {
               ))}
             </div>
 
-            <div className="mt-10 flex items-center justify-center gap-4">
+            <div className="mt-10 flex items-center justify-center gap-3 sm:gap-4">
               <button
                 type="button"
                 disabled={!hasPrev}
                 onClick={() => loadPayments(page - 1)}
-                className="rounded-lg border px-4 py-2 text-sm font-medium disabled:cursor-not-allowed disabled:text-gray-400 hover:bg-gray-50"
+                className="rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-xs sm:text-sm font-semibold text-gray-700 hover:bg-gray-50 disabled:bg-gray-50 disabled:text-gray-400 disabled:border-gray-200 disabled:cursor-not-allowed transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black min-h-[40px]"
               >
                 ← Sebelumnya
               </button>
 
-              <span className="text-sm text-gray-600 font-medium">
+              <span className="text-xs sm:text-sm font-medium text-gray-600">
                 Halaman {page} dari {totalPages}
               </span>
 
@@ -214,7 +214,7 @@ export default function PaymentHistoryPage() {
                 type="button"
                 disabled={!hasNext}
                 onClick={() => loadPayments(page + 1)}
-                className="rounded-lg border px-4 py-2 text-sm font-medium disabled:cursor-not-allowed disabled:text-gray-400 hover:bg-gray-50"
+                className="rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-xs sm:text-sm font-semibold text-gray-700 hover:bg-gray-50 disabled:bg-gray-50 disabled:text-gray-400 disabled:border-gray-200 disabled:cursor-not-allowed transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black min-h-[40px]"
               >
                 Berikutnya →
               </button>

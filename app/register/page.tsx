@@ -2,7 +2,10 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { register } from "@/services/auth";
+import Button from "@/components/UI/Button";
+import Input from "@/components/UI/Input";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -41,89 +44,80 @@ export default function RegisterPage() {
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center px-6">
-      <div className="w-full max-w-md">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold">Register</h1>
+    <main className="flex min-h-[calc(100vh-65px)] items-center justify-center px-4 sm:px-6 py-10 bg-gray-50/30">
+      <div className="w-full max-w-md rounded-2xl border border-gray-200 bg-white p-6 sm:p-8 shadow-2xs">
+        <div className="mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900">
+            Register
+          </h1>
 
-          <p className="mt-2 text-gray-600">
-            Buat akun WARU kamu.
+          <p className="mt-1.5 text-xs sm:text-sm text-gray-600">
+            Buat akun WARU baru untuk mulai bertransaksi.
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <div>
-            <label
-              htmlFor="name"
-              className="mb-2 block text-sm font-medium"
-            >
-              Nama
-            </label>
+        <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
+          <Input
+            id="name"
+            type="text"
+            label="Nama Lengkap"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Nama kamu"
+            autoComplete="name"
+            required
+          />
 
-            <input
-              id="name"
-              type="text"
-              value={name}
-              onChange={(event) => setName(event.target.value)}
-              placeholder="Nama kamu"
-              required
-              className="w-full rounded-lg border px-4 py-3 outline-none focus:ring-2"
-            />
-          </div>
+          <Input
+            id="email"
+            type="email"
+            label="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="nama@email.com"
+            autoComplete="email"
+            required
+          />
 
-          <div>
-            <label
-              htmlFor="email"
-              className="mb-2 block text-sm font-medium"
-            >
-              Email
-            </label>
-
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              placeholder="nama@email.com"
-              required
-              className="w-full rounded-lg border px-4 py-3 outline-none focus:ring-2"
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="password"
-              className="mb-2 block text-sm font-medium"
-            >
-              Password
-            </label>
-
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              placeholder="Masukkan password"
-              required
-              className="w-full rounded-lg border px-4 py-3 outline-none focus:ring-2"
-            />
-          </div>
+          <Input
+            id="password"
+            type="password"
+            label="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Minimal 6 karakter"
+            autoComplete="new-password"
+            required
+          />
 
           {error && (
-            <p className="rounded-lg border border-red-300 bg-red-50 p-3 text-sm text-red-600">
-              {error}
-            </p>
+            <div
+              role="alert"
+              className="rounded-xl border border-red-200 bg-red-50 p-3.5 text-xs sm:text-sm text-red-800 flex items-center justify-between"
+            >
+              <span>{error}</span>
+            </div>
           )}
 
-          <button
+          <Button
             type="submit"
             disabled={loading}
-            className="w-full rounded-lg bg-black px-4 py-3 font-medium text-white transition hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-50"
+            className="w-full mt-2"
           >
             {loading ? "Mendaftarkan..." : "Register"}
-          </button>
+          </Button>
+
+          <p className="text-center text-xs sm:text-sm text-gray-600 pt-2">
+            Sudah punya akun?{" "}
+            <Link
+              href="/login"
+              className="font-semibold text-black hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black rounded"
+            >
+              Masuk di sini
+            </Link>
+          </p>
         </form>
       </div>
     </main>
   );
-}
+}

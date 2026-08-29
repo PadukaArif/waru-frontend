@@ -4,14 +4,14 @@ type CardProps = {
 };
 
 export default function Card({
-    children,
-    className = "",
+  children,
+  className = "",
 }: CardProps) {
-    return (
-        <div
-            className={`rounded-xl border bg-white p-4 shadow-sm ${className}`}
-        >
-            {children}
-        </div>
-    );
+  return (
+    <div
+      className={`rounded-2xl border border-gray-200 bg-white p-5 sm:p-6 shadow-2xs ${className}`}
+    >
+      {children}
+    </div>
+  );
 }
