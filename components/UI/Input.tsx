@@ -65,7 +65,7 @@ export default function Input({
           step={step}
           autoComplete={autoComplete}
           className={`w-full rounded-xl border px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-primary focus-visible:border-transparent transition-colors min-h-11 ${
-            disabled ? "bg-slate-100 text-slate-400" : "bg-white text-navy placeholder:text-slate-400"
+            disabled ? "bg-slate-100 text-slate-400" : "bg-white text-navy"
           } ${isPasswordInput ? "pr-16" : ""} ${className}`}
         />
 
