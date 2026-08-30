@@ -35,6 +35,44 @@ export default function Navbar() {
     return pathname === path || pathname.startsWith(`${path}/`);
   }
 
+  const isAuthPage = pathname === "/login" || pathname === "/register";
+
+  if (isAuthPage) {
+    const isLogin = pathname === "/login";
+    return (
+      <header className="border-b border-slate-200/80 bg-white/95 backdrop-blur-xs sticky top-0 z-40 h-16 flex items-center">
+        <nav className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+          <Link href="/" className="flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-primary rounded-lg px-2 py-1 transition-colors group">
+            <span className="text-xl font-black tracking-tight text-navy group-hover:text-blue-primary transition-colors">
+              WARU
+            </span>
+            <span className="hidden sm:inline-flex items-center rounded-md bg-blue-50 px-2 py-0.5 text-[10px] font-bold text-blue-primary border border-blue-100 uppercase tracking-wider">
+              POS
+            </span>
+          </Link>
+
+          <div>
+            {isLogin ? (
+              <Link
+                href="/register"
+                className="rounded-lg bg-blue-primary px-4 py-2 text-xs sm:text-sm font-semibold text-white hover:bg-blue-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-primary transition shadow-xs"
+              >
+                Register
+              </Link>
+            ) : (
+              <Link
+                href="/login"
+                className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-xs sm:text-sm font-semibold text-navy hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-primary transition shadow-xs"
+              >
+                Login
+              </Link>
+            )}
+          </div>
+        </nav>
+      </header>
+    );
+  }
+
   return (
     <header className="border-b border-slate-200/80 bg-white/95 backdrop-blur-xs sticky top-0 z-40 h-16 flex items-center">
       <nav className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
